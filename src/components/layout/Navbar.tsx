@@ -22,6 +22,13 @@ export default function Navbar() {
 
         <div className="flex gap-8">
           <Link
+            href="/solutions"
+            className="text-sm text-slate-200 transition hover:text-cyan-300"
+          >
+            Solutions
+          </Link>
+
+          <Link
             href="#services"
             className="text-sm text-slate-200 transition hover:text-cyan-300"
           >

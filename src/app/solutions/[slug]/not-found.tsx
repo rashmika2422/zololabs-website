@@ -12,12 +12,20 @@ export default function SolutionNotFound() {
       <p className="mt-4 max-w-md text-base leading-7 text-slate-400">
         That practice area does not exist. Browse the solutions we do ship.
       </p>
-      <Link
-        href="/solutions"
-        className="mt-8 inline-flex h-11 items-center rounded-full bg-cyan-400 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-      >
-        View solutions
-      </Link>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <Link
+          href="/solutions"
+          className="inline-flex h-11 items-center rounded-full bg-cyan-400 px-5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+        >
+          View solutions
+        </Link>
+        <Link
+          href="/"
+          className="inline-flex h-11 items-center rounded-full border border-white/15 px-5 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+        >
+          Back to home
+        </Link>
+      </div>
     </div>
   );
 }
