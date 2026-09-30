@@ -1,61 +1,94 @@
 import type { Metadata } from "next";
-import { SolutionCard } from "@/components/solutions/SolutionCard";
-import { SolutionCTA } from "@/components/solutions/SolutionCTA";
-import { SolutionsHero } from "@/components/solutions/SolutionsHero";
-import { solutions } from "@/data/solutions";
+import { IndustryNav } from "@/components/solutions/IndustryNav";
+import { IndustrySection } from "@/components/solutions/IndustrySection";
+import { ButtonLink } from "@/components/ui/Button";
+import { ContactCTA } from "@/components/ui/ContactCTA";
+import { ArrowRightIcon } from "@/components/ui/icons";
+import { industries, serviceTypes } from "@/data/industries";
 
 export const metadata: Metadata = {
-  title: "Solutions · ZoloLabs",
+  title: "Solutions",
   description:
-    "Custom software, AI automation, web applications, and SaaS platforms engineered for retail, hospitality, education, and growing SMEs — scoped to your process and priced for an SME budget.",
+    "Custom software, AI automation, web applications and SaaS platforms for retail, hospitality, education and growing SMEs — scoped to your process and priced for an SME budget.",
+  alternates: { canonical: "/solutions" },
 };
 
-const HERO_EYEBROW = "ENGINEERED FOR SMALL & MEDIUM ENTERPRISES";
-const HERO_HEADLINE_START = "Software engineered to fit your ";
-const HERO_HIGHLIGHT = "industry";
-const HERO_HEADLINE_END = ", not the other way around.";
-const HERO_DESCRIPTION =
-  "Off-the-shelf platforms arrive bloated with features you will never switch on, priced per seat for companies far bigger than yours, and shaped around a process that is not the one you run. ZoloLabs builds the opposite: focused software mapped to how your business already works, scoped to an SME budget, and released in stages so it scales with you instead of ahead of you.";
-
-const CTA_HEADLINE = "Tell us where off-the-shelf stops fitting.";
-const CTA_DESCRIPTION =
-  "Bring us the workflow your current tools cannot handle. We will map the process, scope the build, and show you what it costs before a line of code is written.";
-
+/**
+ * One page, four anchorable industries. This replaces the previous
+ * /solutions/[slug] route set (four near-identical pages) with a single
+ * document that is easier to scan and cheaper to load.
+ */
 export default function SolutionsPage() {
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[#050814] px-6 py-24 text-white">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.16),transparent_60%)]"
-      />
-
-      <div className="relative mx-auto w-full max-w-6xl">
-        <SolutionsHero
-          eyebrow={HERO_EYEBROW}
-          headlineStart={HERO_HEADLINE_START}
-          highlight={HERO_HIGHLIGHT}
-          headlineEnd={HERO_HEADLINE_END}
-          description={HERO_DESCRIPTION}
+    <>
+      <header className="relative isolate overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="glow-top pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
         />
-      </div>
 
-      <section
-        aria-label="Industries we engineer for"
-        className="relative mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2"
-      >
-        {solutions.map((solution) => (
-          <SolutionCard key={solution.slug} solution={solution} />
+        <div className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-12 sm:pt-20">
+          <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">
+            Solutions
+          </p>
+
+          <h1 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl">
+            Software engineered to fit{" "}
+            <span className="text-accent">your industry</span>, not the other
+            way around.
+          </h1>
+
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-400">
+            Off-the-shelf platforms arrive bloated, priced per seat for companies
+            far bigger than yours, and shaped around a process you do not run. We
+            build the opposite: focused software mapped to how your business
+            already works, scoped to an SME budget, and released in stages.
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <ButtonLink href="/contact">
+              Book a discovery session
+              <ArrowRightIcon className="h-4 w-4" />
+            </ButtonLink>
+            <span className="text-sm text-slate-400">
+              Four practice areas, or ask the assistant anything.
+            </span>
+          </div>
+
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {serviceTypes.map((serviceType) => (
+              <li
+                key={serviceType}
+                className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-slate-400 uppercase"
+              >
+                {serviceType}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </header>
+
+      <IndustryNav />
+
+      <div className="mx-auto w-full max-w-6xl space-y-16 px-6 py-14">
+        {industries.map((industry, index) => (
+          <IndustrySection
+            key={industry.slug}
+            industry={industry}
+            index={index}
+          />
         ))}
-      </section>
+      </div>
 
-      <div className="relative mx-auto mt-16 w-full max-w-6xl">
-        <SolutionCTA
-          id="solutions-cta"
-          variant="gradient"
-          headline={CTA_HEADLINE}
-          description={CTA_DESCRIPTION}
+      <div className="mx-auto w-full max-w-6xl px-6 pb-20">
+        <ContactCTA
+          headline="Tell us which bottleneck costs you the most."
+          description="Bring the process your current tools cannot handle. We will map the current state, name the constraint, and scope the first slice we can ship for your team."
+          secondaryLabel="Back to services"
+          secondaryHref="/#services"
         />
       </div>
-    </main>
+    </>
   );
 }
+
