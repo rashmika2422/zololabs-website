@@ -9,7 +9,7 @@ type SectionProps = {
 /** Page section with a consistent vertical rhythm and anchor offset. */
 export function Section({ id, children, className }: SectionProps) {
   return (
-    <section id={id} className={cx("scroll-mt-10", className)}>
+    <section id={id} className={cx("page-section scroll-mt-10", className)}>
       {children}
     </section>
   );
@@ -36,14 +36,14 @@ export function SectionHeading({
   const isCentered = align === "center";
 
   return (
-    <header className={cx(isCentered && "text-center", className)}>
-      <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">
+    <header className={cx("section-heading", isCentered && "text-center", className)}>
+      <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
         {eyebrow}
       </p>
       <h2
         id={id}
         className={cx(
-          "mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl",
+          "mt-3 text-3xl font-bold tracking-tight text-heading sm:text-4xl",
           isCentered && "mx-auto max-w-3xl",
         )}
       >
@@ -52,7 +52,7 @@ export function SectionHeading({
       {description ? (
         <p
           className={cx(
-            "mt-4 max-w-2xl text-base leading-7 text-slate-400",
+            "mt-4 max-w-2xl text-base leading-7 text-muted",
             isCentered && "mx-auto",
           )}
         >

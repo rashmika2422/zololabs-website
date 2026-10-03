@@ -1,0 +1,18 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path = public, extensions;
+select plan(12);
+select ok((select relrowsecurity from pg_class where oid = 'public.inquiries'::regclass), 'inquiries has RLS enabled');
+select ok(not has_table_privilege('anon', 'public.inquiries', 'select'), 'anon cannot read inquiries');
+select ok(not has_table_privilege('anon', 'public.inquiries', 'insert'), 'anon cannot insert inquiries directly');
+select ok(not has_table_privilege('anon', 'public.inquiries', 'update'), 'anon cannot update inquiries');
+select ok(not has_table_privilege('anon', 'public.inquiries', 'delete'), 'anon cannot delete inquiries');
+select ok(not has_table_privilege('authenticated', 'public.inquiries', 'select'), 'signed-in visitors cannot read inquiries');
+select ok(not has_table_privilege('authenticated', 'public.inquiries', 'insert'), 'signed-in visitors cannot insert inquiries directly');
+select ok(not has_table_privilege('authenticated', 'public.inquiries', 'update'), 'signed-in visitors cannot update inquiries');
+select ok(not has_table_privilege('authenticated', 'public.inquiries', 'delete'), 'signed-in visitors cannot delete inquiries');
+select ok(has_table_privilege('service_role', 'public.inquiries', 'select'), 'server can read its notification queue');
+select ok(has_table_privilege('service_role', 'public.inquiries', 'insert'), 'server can save inquiries');
+select ok(has_table_privilege('service_role', 'public.inquiries', 'update'), 'server can update notification status');
+select * from finish();
+rollback;

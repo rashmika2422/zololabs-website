@@ -39,7 +39,7 @@ export default function ChatWidget() {
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    endRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "end" });
   }, [messages, loading]);
 
   useEffect(() => {
@@ -121,14 +121,14 @@ export default function ChatWidget() {
 
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-sans">
       {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
           aria-haspopup="dialog"
           aria-expanded={false}
-          className="flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-3 font-semibold text-slate-950 shadow-lg transition hover:bg-cyan-400 hover:scale-105"
+          className="flex items-center gap-2 rounded-full bg-accent px-5 py-3 font-semibold text-accent-ink shadow-lg transition hover:bg-accent-hover motion-safe:hover:-translate-y-0.5"
         >
           <ChatIcon className="h-4 w-4" />
           Chat with us
@@ -139,12 +139,12 @@ export default function ChatWidget() {
         <div
           role="dialog"
           aria-label="Chat with ZoloLabs"
-          className="flex h-[480px] w-[calc(100vw-3rem)] max-w-96 flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl"
+          className="chat-panel flex h-[min(480px,calc(100dvh-2rem))] w-[calc(100vw-3rem)] max-w-96 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
         >
-          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950 p-4">
+          <div className="flex items-center justify-between border-b border-line bg-ink p-4">
             <div>
-              <p className="text-sm font-medium text-white">ZoloLabs assistant</p>
-              <p className="text-xs text-slate-400">
+              <p className="text-sm font-medium text-heading">ZoloLabs assistant</p>
+              <p className="text-xs text-muted">
                 {loading ? "Typing…" : "Usually replies instantly"}
               </p>
             </div>
@@ -152,7 +152,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setIsOpen(false)}
               aria-label="Close chat"
-              className="rounded p-1 text-lg font-bold text-slate-400 transition hover:text-white"
+              className="rounded p-1 text-lg font-bold text-muted transition hover:text-heading"
             >
               ✕
             </button>
@@ -171,8 +171,8 @@ export default function ChatWidget() {
                 <div
                   className={`max-w-[80%] whitespace-pre-wrap break-words rounded-xl px-3.5 py-2 text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-cyan-500 font-medium text-slate-950"
-                      : "bg-slate-800 text-slate-200"
+                      ? "bg-accent font-medium text-accent-ink"
+                      : "bg-raised text-body"
                   }`}
                 >
                   {msg.content}
@@ -187,7 +187,7 @@ export default function ChatWidget() {
                   key={reply}
                   type="button"
                   onClick={() => void sendMessage(reply)}
-                  className="block w-full rounded-xl border border-slate-700 px-3.5 py-2 text-left text-sm text-slate-200 transition hover:border-cyan-500/50 hover:bg-slate-800"
+                  className="block w-full rounded-xl border border-line px-3.5 py-2 text-left text-sm text-body transition hover:border-accent/50 hover:bg-raised"
                 >
                   {reply}
                 </button>
@@ -195,14 +195,14 @@ export default function ChatWidget() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="rounded-xl bg-slate-800 px-3 py-2 text-xs italic text-slate-400">
+                <div className="rounded-xl bg-raised px-3 py-2 text-xs italic text-muted">
                   Typing…
                 </div>
               </div>
             )}
 
             {error && (
-              <p role="alert" className="rounded-xl bg-amber-500/10 px-3.5 py-2 text-sm text-amber-300">
+              <p role="alert" className="rounded-xl bg-amber-500/10 px-3.5 py-2 text-sm text-warning">
                 {error}
               </p>
             )}
@@ -215,7 +215,7 @@ export default function ChatWidget() {
               event.preventDefault();
               void sendMessage(input);
             }}
-            className="flex gap-2 border-t border-slate-800 bg-slate-950 p-3"
+            className="flex gap-2 border-t border-line bg-ink p-3"
           >
             <label htmlFor="chat-input" className="sr-only">
               Message
@@ -228,12 +228,12 @@ export default function ChatWidget() {
               placeholder="Ask a question…"
               maxLength={2000}
               autoComplete="off"
-              className="flex-1 rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none"
+              className="min-w-0 flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-heading placeholder:text-subtle focus:border-accent focus-visible:outline-2 focus-visible:outline-brand"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-lg bg-cyan-500 px-3.5 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
+              className="rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-accent-ink transition hover:bg-accent-hover disabled:opacity-50"
             >
               Send
             </button>

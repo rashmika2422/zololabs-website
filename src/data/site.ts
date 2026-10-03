@@ -34,27 +34,27 @@ export const navLinks = [
 export const services: Service[] = [
   {
     name: "Custom Software",
-    summary: "Systems modelled on how you already work",
+    summary: "Systems built for your workflows",
     detail:
-      "Bespoke internal tools, CRMs and workflow systems that replace the workaround your team built around software that never fitted.",
+      "Bespoke internal tools and workflow systems designed for how your team operates, replacing clunky spreadsheets and workarounds.",
   },
   {
     name: "Web Applications",
-    summary: "Apps your customers and staff actually use",
+    summary: "Apps people actually want to use",
     detail:
-      "Fast, accessible portals, dashboards, booking and ordering flows — measured on the tasks they remove, not the features they list.",
+      "Fast, accessible portals, dashboards, and booking flows built to remove friction and save time for your staff and customers.",
   },
   {
     name: "AI & Automation",
-    summary: "Automation for the repetitive middle",
+    summary: "Automate the repetitive tasks",
     detail:
-      "Document intake, quoting, reconciliation and follow-up handled automatically, with human review wherever judgement or policy matters.",
+      "Handle document intake, quoting, and follow-ups automatically. Keep humans in the loop only when judgement is required.",
   },
   {
     name: "SaaS Development",
-    summary: "Platforms built to launch and keep growing",
+    summary: "Platforms built to scale",
     detail:
-      "Multi-tenant products with billing, roles, permissions and reporting, so you can sell the software you used to buy.",
+      "Multi-tenant products complete with billing, roles, and reporting. We help you turn your internal tools into a sellable product.",
   },
 ];
 
@@ -62,17 +62,17 @@ export const processSteps: ProcessStep[] = [
   {
     title: "Discovery session",
     description:
-      "Bring the process that breaks most often. We map the current state, name the real constraint, and agree what success looks like.",
+      "We map your current processes, pinpoint the real bottlenecks, and align on clear success metrics before any development starts.",
   },
   {
     title: "Written scope and price",
     description:
-      "You get a scoped first slice, a fixed price and a delivery plan — before a line of code is written.",
+      "Receive a detailed project scope, a fixed price, and a clear delivery plan before writing a single line of code.",
   },
   {
     title: "Build, ship, hand over",
     description:
-      "We release in stages, document as we go, and train your team so the system ends up owned by you.",
+      "We deliver in stages, document everything, and train your team to ensure you fully own the final product.",
   },
 ];
 

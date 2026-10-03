@@ -28,17 +28,17 @@ export default function SolutionsPage() {
         />
 
         <div className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-12 sm:pt-20">
-          <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">
+          <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
             Solutions
           </p>
 
-          <h1 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl">
+          <h1 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight text-balance text-heading sm:text-5xl">
             Software engineered to fit{" "}
-            <span className="text-accent">your industry</span>, not the other
+            <span className="text-brand">your industry</span>, not the other
             way around.
           </h1>
 
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-muted">
             Off-the-shelf platforms arrive bloated, priced per seat for companies
             far bigger than yours, and shaped around a process you do not run. We
             build the opposite: focused software mapped to how your business
@@ -50,7 +50,7 @@ export default function SolutionsPage() {
               Book a discovery session
               <ArrowRightIcon className="h-4 w-4" />
             </ButtonLink>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-muted">
               Four practice areas, or ask the assistant anything.
             </span>
           </div>
@@ -59,7 +59,7 @@ export default function SolutionsPage() {
             {serviceTypes.map((serviceType) => (
               <li
                 key={serviceType}
-                className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-slate-400 uppercase"
+                className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-muted uppercase"
               >
                 {serviceType}
               </li>

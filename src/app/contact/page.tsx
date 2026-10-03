@@ -17,13 +17,13 @@ export default function ContactPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20">
       <header className="max-w-3xl">
-        <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">
+        <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
           Contact
         </p>
-        <h1 className="mt-5 text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl">
+        <h1 className="mt-5 text-4xl font-bold tracking-tight text-balance text-heading sm:text-5xl">
           Tell us where off-the-shelf stops fitting.
         </h1>
-        <p className="mt-6 text-lg leading-8 text-slate-400">
+        <p className="mt-6 text-lg leading-8 text-muted">
           Bring the workflow your current tools cannot handle. We will map the
           process, name the constraint, and show you what a first release costs
           before a line of code is written.
@@ -34,21 +34,21 @@ export default function ContactPage() {
         <ContactForm contactEmail={contactEmail} />
 
         <aside className="space-y-8">
-          <div className="rounded-2xl border border-line bg-surface/70 p-6">
-            <h2 className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+          <div className="panel rounded-2xl border border-line bg-surface/70 p-6">
+            <h2 className="text-xs font-semibold tracking-[0.18em] text-subtle uppercase">
               What happens next
             </h2>
             <ol className="mt-5 space-y-5">
               {processSteps.map((step, index) => (
                 <li key={step.title} className="flex gap-4">
-                  <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-xs font-semibold text-accent tabular-nums">
+                  <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-xs font-semibold text-brand tabular-nums">
                     {index + 1}
                   </span>
                   <span>
-                    <span className="block text-sm font-semibold text-white">
+                    <span className="block text-sm font-semibold text-heading">
                       {step.title}
                     </span>
-                    <span className="mt-1 block text-sm leading-6 text-slate-400">
+                    <span className="mt-1 block text-sm leading-6 text-muted">
                       {step.description}
                     </span>
                   </span>
@@ -57,8 +57,8 @@ export default function ContactPage() {
             </ol>
           </div>
 
-          <div className="rounded-2xl border border-line bg-surface/70 p-6">
-            <h2 className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+          <div className="panel rounded-2xl border border-line bg-surface/70 p-6">
+            <h2 className="text-xs font-semibold tracking-[0.18em] text-subtle uppercase">
               Already know your industry?
             </h2>
             <ul className="mt-4 space-y-2">
@@ -66,7 +66,7 @@ export default function ContactPage() {
                 <li key={industry.slug}>
                   <Link
                     href={`/solutions#${industry.slug}`}
-                    className="text-sm text-slate-300 transition-colors hover:text-accent"
+                    className="text-sm text-body transition-colors hover:text-brand"
                   >
                     {industry.title} — {industry.summary}
                   </Link>
@@ -75,7 +75,7 @@ export default function ContactPage() {
             </ul>
           </div>
 
-          <p className="text-sm leading-6 text-slate-400">
+          <p className="text-sm leading-6 text-muted">
             Pressed for time? The assistant in the bottom corner answers the
             obvious questions straight away, and hands you back to a person when
             it cannot.

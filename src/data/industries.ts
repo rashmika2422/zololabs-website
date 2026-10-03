@@ -41,22 +41,22 @@ const retail: Industry = {
   title: "Retail",
   summary: "POS, stock and storefronts on one version of the truth.",
   intro:
-    "ZoloLabs connects your POS, inventory and storefronts into one operating picture — so stock counts are true, orders move between channels, and your team stops reconciling spreadsheets while customers wait.",
+    "We connect your POS, inventory, and storefronts into one unified system. Say goodbye to stock discrepancies and manual spreadsheet reconciliation.",
   problems: [
     {
-      title: "Stock truth lives in six places",
+      title: "Scattered stock truth",
       description:
-        "The shop floor, the warehouse export, the supplier sheet and the website each hold a different number, so you over-order on one line and stock out on another.",
+        "Your shop floor, warehouse, and website show different numbers, leading to over-ordering and stockouts.",
     },
     {
-      title: "The POS is an island",
+      title: "Isolated POS data",
       description:
-        "Sales land in a terminal nothing else can read. Daily reporting is re-typed by hand, promotions cannot span channels, and refunds sit outside the ledger.",
+        "Sales data is stuck in the terminal. Reporting requires manual entry, and promotions don't cross channels easily.",
     },
     {
-      title: "Channels contradict each other",
+      title: "Channel conflicts",
       description:
-        "The website promises next-day delivery on the last unit the local store sold this morning. Click-and-collect, ship-from-store and returns share no rules.",
+        "Online promises conflict with in-store reality. Unified returns and ship-from-store are impossible to manage.",
     },
   ],
   builds: [
@@ -101,22 +101,22 @@ const hospitality: Industry = {
   title: "Hospitality",
   summary: "Direct bookings, faster service, coordinated staff.",
   intro:
-    "We build the guest journey end to end: a booking engine that keeps commission in your pocket, self-service that clears the front-desk queue, and dispatch that tells the right person a room needs attention now.",
+    "We build the guest journey end-to-end: commission-free direct booking, self-service check-in, and smart task dispatch for staff.",
   problems: [
     {
-      title: "OTAs own the guest relationship",
+      title: "OTAs take your margins",
       description:
-        "Commission platforms take the margin and keep the guest data, so your direct channel loses to whichever listing prices the same night lower.",
+        "Third-party platforms own the guest relationship and take a huge cut of your revenue.",
     },
     {
-      title: "The front desk is the bottleneck",
+      title: "Front desk bottlenecks",
       description:
-        "Check-in, requests, room service and late checkouts all route through one phone and one queue, so guests wait and staff are interrupted mid-task.",
+        "Check-ins, requests, and room service all funnel through one phone, keeping guests waiting and staff overwhelmed.",
     },
     {
-      title: "Maintenance requests disappear",
+      title: "Lost maintenance requests",
       description:
-        "A broken shower is reported verbally at 9am and rediscovered at 6pm. Nothing is logged, assigned or timed, so nothing can be measured or prevented.",
+        "Issues are reported verbally and forgotten. Nothing is tracked, timed, or proactively prevented.",
     },
   ],
   builds: [
@@ -161,22 +161,22 @@ const education: Industry = {
   title: "Education",
   summary: "Admissions, portals and reporting without the paperwork.",
   intro:
-    "We build the systems behind the student lifecycle: portals students and parents actually use, onboarding that runs itself, and reporting that gives leadership answers before the board meeting.",
+    "We build the systems behind the student lifecycle: intuitive portals, automated onboarding, and real-time reporting for leadership.",
   problems: [
     {
-      title: "Enrolment runs on email attachments",
+      title: "Paper-based enrolment",
       description:
-        "Forms arrive as scans, get re-typed into a spreadsheet and are chased for weeks. Nobody can say which documents are still missing for which applicant.",
+        "Applications are lost in inboxes or spreadsheets. No one knows what documents are missing for which applicant.",
     },
     {
-      title: "Students and parents cannot self-serve",
+      title: "Lack of self-service",
       description:
-        "Every timetable question, fee statement and absence note becomes a phone call to a small admin team that already has a queue.",
+        "Routine questions about timetables and fees turn into phone calls, overwhelming small admin teams.",
     },
     {
-      title: "Records are scattered by department",
+      title: "Fragmented records",
       description:
-        "Admissions, finance and academics each keep their own copy of the student record, so a student's status depends on who you ask.",
+        "Admissions, finance, and academics hold separate data silos, causing confusion and conflicting information.",
     },
   ],
   builds: [
@@ -221,22 +221,22 @@ const smes: Industry = {
   title: "SMEs",
   summary: "Replace the spreadsheet that runs your business.",
   intro:
-    "Most small and mid-sized businesses are held together by a workbook only one person understands. We rebuild those workflows as real systems — owned by you, backed up, and ready to grow.",
+    "Most SMEs rely on fragile spreadsheets. We rebuild those critical workflows as secure, scalable systems owned by you.",
   problems: [
     {
-      title: "One spreadsheet, one key person",
+      title: "Key-person dependency",
       description:
-        "The business runs on a workbook only one team can open and interpret. Annual leave, a resignation or a corrupted file becomes an operational risk overnight.",
+        "Your business relies on a complex workbook only one person understands. If they leave, it's an operational risk.",
     },
     {
-      title: "Copy-paste between six tools",
+      title: "Manual data entry",
       description:
-        "Quotes, invoices, job sheets and stock levels move by hand between systems that were never designed to talk to each other.",
+        "Quotes, invoices, and job sheets are manually copy-pasted between systems that don't integrate.",
     },
     {
-      title: "Off-the-shelf software does not fit",
+      title: "Off-the-shelf tools fail",
       description:
-        "Enterprise tools are too heavy and expensive to adopt, while entry-level tools cannot model the way you actually operate and quote.",
+        "Enterprise tools are too expensive, and entry-level tools don't fit how you actually operate.",
     },
   ],
   builds: [

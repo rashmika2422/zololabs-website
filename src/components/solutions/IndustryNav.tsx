@@ -12,7 +12,7 @@ export function IndustryNav() {
       className="sticky top-16 z-40 border-y border-line bg-ink/90 backdrop-blur-md"
     >
       <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-6 py-3">
-        <span className="hidden shrink-0 text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase sm:block">
+        <span className="hidden shrink-0 text-xs font-semibold tracking-[0.18em] text-subtle uppercase sm:block">
           Jump to
         </span>
 
@@ -21,7 +21,7 @@ export function IndustryNav() {
             <li key={industry.slug}>
               <Link
                 href={`#${industry.slug}`}
-                className="inline-flex rounded-full border border-line px-3.5 py-1.5 text-sm whitespace-nowrap text-slate-300 transition-colors hover:border-accent/50 hover:text-accent"
+                className="inline-flex rounded-full border border-line px-3.5 py-1.5 text-sm whitespace-nowrap text-body transition-colors hover:border-accent/50 hover:text-brand"
               >
                 {industry.title}
               </Link>
@@ -31,7 +31,7 @@ export function IndustryNav() {
 
         <Link
           href="/contact"
-          className="hidden shrink-0 text-sm font-semibold text-accent transition-colors hover:text-cyan-300 sm:inline"
+          className="hidden shrink-0 text-sm font-semibold text-brand transition-colors hover:text-brand sm:inline"
         >
           Book a session
         </Link>

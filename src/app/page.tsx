@@ -1,7 +1,9 @@
-import Hero from "@/components/Home/Hero";
-import Industries from "@/components/Home/Industries";
-import Process from "@/components/Home/Process";
-import Services from "@/components/Home/Services";
+import "@/components/home/home.css";
+import Technology from "@/components/home/Technology";
+import Hero from "@/components/home/Hero";
+import Industries from "@/components/home/Industries";
+import Process from "@/components/home/Process";
+import Services from "@/components/home/Services";
 import { ContactCTA } from "@/components/ui/ContactCTA";
 
 export const metadata = {
@@ -13,6 +15,7 @@ export default function Home() {
     <>
       <Hero />
       <Services />
+      <Technology />
       <Industries />
       <Process />
       <div className="mx-auto w-full max-w-6xl px-6 pb-20">

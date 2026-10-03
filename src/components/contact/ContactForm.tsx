@@ -2,7 +2,8 @@
 
 import type { ChangeEvent } from "react";
 import { useActionState, useState } from "react";
-import { initialContactState, sendEnquiry } from "@/app/contact/actions";
+import { sendEnquiry } from "@/app/contact/actions";
+import { initialContactState } from "@/app/contact/state";
 import { buttonClass } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/icons";
 import { cx } from "@/components/ui/Section";
@@ -16,9 +17,9 @@ const EMPTY_FIELDS: Record<Field, string> = {
   message: "",
 };
 
-const LABEL_CLASS = "block text-sm font-medium text-slate-200";
+const LABEL_CLASS = "block text-sm font-medium text-body";
 const FIELD_CLASS =
-  "mt-2 w-full rounded-xl border border-line bg-ink px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-colors focus:border-accent focus:outline-none";
+  "mt-2 w-full rounded-xl border border-line bg-ink px-4 py-3 text-sm text-heading placeholder:text-subtle transition-colors focus:border-accent focus-visible:outline-2 focus-visible:outline-brand";
 
 type ContactFormProps = {
   contactEmail: string | null;
@@ -42,11 +43,11 @@ export function ContactForm({ contactEmail }: ContactFormProps) {
   if (state.status === "success" && !showFormAgain) {
     return (
       <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 sm:p-8">
-        <CheckIcon className="h-6 w-6 text-accent" />
-        <h2 className="mt-4 text-xl font-semibold tracking-tight text-white">
-          Message sent
+        <CheckIcon className="h-6 w-6 text-brand" />
+        <h2 className="mt-4 text-xl font-semibold tracking-tight text-heading">
+          Inquiry received
         </h2>
-        <p className="mt-2 text-sm leading-6 text-slate-300">{state.message}</p>
+        <p className="mt-2 text-sm leading-6 text-body">{state.message}</p>
         <button
           type="button"
           onClick={() => {
@@ -65,7 +66,7 @@ export function ContactForm({ contactEmail }: ContactFormProps) {
     <form
       action={formAction}
       onSubmit={() => setShowFormAgain(false)}
-      className="rounded-2xl border border-line bg-surface/70 p-6 sm:p-8"
+      className="panel rounded-2xl border border-line bg-surface/70 p-6 sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
@@ -107,7 +108,7 @@ export function ContactForm({ contactEmail }: ContactFormProps) {
 
       <div className="mt-5">
         <label htmlFor="company" className={LABEL_CLASS}>
-          Company <span className="text-slate-500">(optional)</span>
+          Company <span className="text-subtle">(optional)</span>
         </label>
         <input
           id="company"
@@ -158,7 +159,7 @@ export function ContactForm({ contactEmail }: ContactFormProps) {
       {state.status === "error" ? (
         <p
           role="alert"
-          className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"
+          className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-warning"
         >
           {state.message}
         </p>
@@ -175,13 +176,13 @@ export function ContactForm({ contactEmail }: ContactFormProps) {
         >
           {isPending ? "Sending…" : "Send enquiry"}
         </button>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-subtle">
           {contactEmail ? (
             <>
               Prefer email?{" "}
               <a
                 href={`mailto:${contactEmail}`}
-                className="font-semibold text-accent transition-colors hover:text-cyan-300"
+                className="font-semibold text-brand transition-colors hover:text-brand"
               >
                 {contactEmail}
               </a>
