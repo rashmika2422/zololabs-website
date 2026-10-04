@@ -1,197 +1,169 @@
 "use client";
 
-import type { ChangeEvent } from "react";
-import { useActionState, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { sendEnquiry } from "@/app/contact/actions";
-import { initialContactState } from "@/app/contact/state";
+import {
+  initialContactState, MAX_DESCRIPTION_LENGTH, projectTypes, validateContactFields,
+  type ContactField, type ContactFieldErrors, type ContactFields, type ContactFormState,
+} from "@/app/contact/state";
 import { buttonClass } from "@/components/ui/Button";
-import { CheckIcon } from "@/components/ui/icons";
-import { cx } from "@/components/ui/Section";
+import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 
-type Field = "name" | "email" | "company" | "message";
-
-const EMPTY_FIELDS: Record<Field, string> = {
-  name: "",
-  email: "",
-  company: "",
-  message: "",
-};
-
-const LABEL_CLASS = "block text-sm font-medium text-body";
-const FIELD_CLASS =
-  "mt-2 w-full rounded-xl border border-line bg-ink px-4 py-3 text-sm text-heading placeholder:text-subtle transition-colors focus:border-accent focus-visible:outline-2 focus-visible:outline-brand";
-
-type ContactFormProps = {
-  contactEmail: string | null;
-};
+const EMPTY_FIELDS: ContactFields = { name: "", company: "", email: "", phone: "", projectType: "", message: "" };
+type ContactFormProps = { contactEmail: string | null };
 
 export function ContactForm({ contactEmail }: ContactFormProps) {
+  const [version, setVersion] = useState(0);
+  return <ContactSubmission key={version} contactEmail={contactEmail} onRestart={() => setVersion((previous) => previous + 1)} />;
+}
+
+function ContactSubmission({ contactEmail, onRestart }: ContactFormProps & { onRestart: () => void }) {
   const [state, formAction, isPending] = useActionState(
-    sendEnquiry,
-    initialContactState,
+    async (previous: ContactFormState, formData: FormData): Promise<ContactFormState> => {
+      try {
+        return await sendEnquiry(previous, formData);
+      } catch {
+        return { status: "error", message: "Your message could not be sent. Check your connection and try again." };
+      }
+    }, initialContactState,
   );
   const [fields, setFields] = useState(EMPTY_FIELDS);
-  const [showFormAgain, setShowFormAgain] = useState(false);
+  const [clientErrors, setClientErrors] = useState<ContactFieldErrors>({});
+  const [editedFields, setEditedFields] = useState<Partial<Record<ContactField, boolean>>>({});
+  const successRef = useRef<HTMLDivElement>(null);
 
-  function update(key: Field) {
-    return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { value } = event.target;
-      setFields((previous) => ({ ...previous, [key]: value }));
+  useEffect(() => {
+    if (state.status === "success") successRef.current?.focus();
+  }, [state.status]);
+
+  function fieldError(field: ContactField) {
+    return clientErrors[field] ?? (!editedFields[field] ? state.fieldErrors?.[field] : undefined);
+  }
+
+  function fieldAttributes(field: ContactField) {
+    return {
+      id: field, name: field, value: fields[field], onChange: update(field),
+      "aria-invalid": fieldError(field) ? true : undefined,
+      "aria-describedby": fieldError(field) ? `${field}-error` : undefined,
+      className: "contact-input",
     };
   }
 
-  if (state.status === "success" && !showFormAgain) {
+  function update(field: ContactField) {
+    return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      const { value } = event.target;
+      setFields((previous) => ({ ...previous, [field]: value }));
+      setEditedFields((previous) => ({ ...previous, [field]: true }));
+      setClientErrors((previous) => {
+        const next = { ...previous };
+        delete next[field];
+        return next;
+      });
+    };
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const errors = validateContactFields(fields);
+    setClientErrors(errors);
+    setEditedFields({});
+    const invalidField = Object.keys(errors)[0] as ContactField | undefined;
+    if (invalidField) {
+      event.preventDefault();
+      const element = event.currentTarget.elements.namedItem(invalidField);
+      if (element instanceof HTMLElement) element.focus();
+    }
+  }
+
+  function errorMessage(field: ContactField) {
+    const error = fieldError(field);
+    return error ? <p id={`${field}-error`} className="contact-field-error">{error}</p> : null;
+  }
+
+  if (state.status === "success") {
     return (
-      <div className="rounded-2xl border border-accent/30 bg-accent/5 p-6 sm:p-8">
-        <CheckIcon className="h-6 w-6 text-brand" />
-        <h2 className="mt-4 text-xl font-semibold tracking-tight text-heading">
-          Inquiry received
-        </h2>
-        <p className="mt-2 text-sm leading-6 text-body">{state.message}</p>
-        <button
-          type="button"
-          onClick={() => {
-            setFields(EMPTY_FIELDS);
-            setShowFormAgain(true);
-          }}
-          className={buttonClass("secondary", "mt-6")}
-        >
-          Send another message
-        </button>
+      <div ref={successRef} className="contact-success" tabIndex={-1} role="status">
+        <span className="contact-success-icon"><CheckIcon /></span>
+        <p className="eyebrow">Conversation started</p>
+        <h2>Thanks for reaching out.</h2>
+        <p>{state.message}</p>
+        <button type="button" onClick={onRestart} className={buttonClass("secondary")}>Send another message</button>
       </div>
     );
   }
 
   return (
-    <form
-      action={formAction}
-      onSubmit={() => setShowFormAgain(false)}
-      className="panel rounded-2xl border border-line bg-surface/70 p-6 sm:p-8"
-    >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className={LABEL_CLASS}>
-            Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            maxLength={80}
-            autoComplete="name"
-            value={fields.name}
-            onChange={update("name")}
-            className={FIELD_CLASS}
-            placeholder="Alex Morgan"
-          />
+    <form action={formAction} onSubmit={handleSubmit} noValidate className="contact-form" aria-busy={isPending}>
+      <div className="contact-form-heading">
+        <h2>Tell us what you have in mind.</h2>
+        <p>All fields are required unless marked optional.</p>
+      </div>
+
+      <fieldset disabled={isPending} className="contact-fields">
+        <legend className="sr-only">Your contact details and project</legend>
+        <div className="contact-field-grid">
+          <div className="contact-field">
+            <label htmlFor="name">Name</label>
+            <input {...fieldAttributes("name")} type="text" required minLength={2} maxLength={80} autoComplete="name" placeholder="Your name" />
+            {errorMessage("name")}
+          </div>
+          <div className="contact-field">
+            <label htmlFor="company">Company / Organization</label>
+            <input {...fieldAttributes("company")} type="text" required minLength={2} maxLength={120} autoComplete="organization" placeholder="Your organization" />
+            {errorMessage("company")}
+          </div>
+          <div className="contact-field">
+            <label htmlFor="email">Email</label>
+            <input {...fieldAttributes("email")} type="email" required maxLength={120} autoComplete="email" placeholder="you@company.com" />
+            {errorMessage("email")}
+          </div>
+          <div className="contact-field">
+            <label htmlFor="phone">Phone <span>(optional)</span></label>
+            <input {...fieldAttributes("phone")} type="tel" maxLength={40} autoComplete="tel" placeholder="Include your country code" />
+            {errorMessage("phone")}
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="email" className={LABEL_CLASS}>
-            Work email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            maxLength={120}
-            autoComplete="email"
-            value={fields.email}
-            onChange={update("email")}
-            className={FIELD_CLASS}
-            placeholder="alex@company.com"
-          />
+        <div className="contact-field">
+          <label htmlFor="projectType">Project Type</label>
+          <select {...fieldAttributes("projectType")} required>
+            <option value="" disabled>Select a project type</option>
+            {projectTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+          </select>
+          {errorMessage("projectType")}
         </div>
-      </div>
 
-      <div className="mt-5">
-        <label htmlFor="company" className={LABEL_CLASS}>
-          Company <span className="text-subtle">(optional)</span>
-        </label>
-        <input
-          id="company"
-          name="company"
-          type="text"
-          maxLength={120}
-          autoComplete="organization"
-          value={fields.company}
-          onChange={update("company")}
-          className={FIELD_CLASS}
-          placeholder="Company name"
-        />
-      </div>
+        <div className="contact-field">
+          <label htmlFor="message">Project description</label>
+          <textarea
+            {...fieldAttributes("message")}
+            required minLength={20} maxLength={MAX_DESCRIPTION_LENGTH} rows={6}
+            placeholder="What are you looking to build or improve? Tell us about your users, the challenge and what a useful outcome looks like."
+            aria-describedby={[fieldError("message") ? "message-error" : "", "message-hint"].filter(Boolean).join(" ")}
+          />
+          <p id="message-hint" className="contact-field-hint">A little context goes a long way. 20–1,800 characters.</p>
+          {errorMessage("message")}
+        </div>
 
-      <div className="mt-5">
-        <label htmlFor="message" className={LABEL_CLASS}>
-          What should we look at?
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          minLength={20}
-          maxLength={2000}
-          rows={6}
-          value={fields.message}
-          onChange={update("message")}
-          className={cx(FIELD_CLASS, "resize-y")}
-          placeholder="Describe the process that breaks most often, the tools you use today, and what you would like to change."
-        />
-      </div>
+        <div aria-hidden="true" className="contact-honeypot">
+          <label htmlFor="website">Website</label>
+          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        </div>
+      </fieldset>
 
-      {/* Honeypot: off-screen for people, tempting for bots. */}
-      <div
-        aria-hidden="true"
-        className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
-      >
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          name="website"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-        />
-      </div>
+      {state.status === "error" && !isPending ? <p role="alert" className="contact-form-error">{state.message}</p> : null}
 
-      {state.status === "error" ? (
-        <p
-          role="alert"
-          className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-warning"
-        >
-          {state.message}
-        </p>
-      ) : null}
-
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className={cx(
-            buttonClass("primary"),
-            isPending && "cursor-not-allowed opacity-60",
-          )}
-        >
-          {isPending ? "Sending…" : "Send enquiry"}
+      <div className="contact-form-submit">
+        <button type="submit" disabled={isPending} className={buttonClass("primary")}>
+          {isPending ? <span className="contact-loading-indicator" aria-hidden="true" /> : null}
+          <span key={isPending ? "pending" : "ready"} className="contact-submit-label">{isPending ? "Sending your message…" : "Start the Conversation"}</span>
+          {!isPending ? <ArrowRightIcon /> : null}
         </button>
-        <p className="text-xs text-subtle">
-          {contactEmail ? (
-            <>
-              Prefer email?{" "}
-              <a
-                href={`mailto:${contactEmail}`}
-                className="font-semibold text-brand transition-colors hover:text-brand"
-              >
-                {contactEmail}
-              </a>
-            </>
-          ) : (
-            "We only use your details to reply to this enquiry."
-          )}
-        </p>
+        <p role="status" aria-live="polite" className="sr-only">{isPending ? "Sending your message. Please wait." : ""}</p>
+        <p className="contact-privacy">We only use your details to respond to your inquiry.</p>
       </div>
+
+      {contactEmail ? <p className="contact-email">Prefer email? <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p> : null}
     </form>
   );
 }

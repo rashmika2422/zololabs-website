@@ -11,11 +11,11 @@ type ChatMessage = {
 };
 
 const GREETING =
-  "Hi! I can tell you what ZoloLabs builds — custom software, AI automation, web apps, and SaaS — and which industry fits you. What are you working on?";
+  "Hi! ZoloLabs builds mobile and web applications, plus business platforms. What would you like to build or improve?";
 
 const QUICK_REPLIES = [
   "Do you work with small businesses?",
-  "What do you build for retail?",
+  "What business platforms do you build?",
   "How much does a project cost?",
 ];
 

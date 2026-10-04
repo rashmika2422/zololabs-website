@@ -1,3 +1,6 @@
+import { Reveal } from "@/components/animations/Reveal";
+import { TextReveal } from "@/components/animations/TextReveal";
+import { PointerGlow } from "@/components/animations/PointerGlow";
 import { ButtonLink } from "./Button";
 import { ArrowRightIcon } from "./icons";
 
@@ -10,49 +13,27 @@ type ContactCTAProps = {
   id?: string;
 };
 
-/**
- * Closing call to action shared by the homepage and /solutions so both pages
- * end on the same, single conversion path.
- */
 export function ContactCTA({
-  headline = "Your next stage of growth starts with a conversation.",
-  description = "Bring the workflow your current tools cannot handle. We will map the process, scope the build and show you what it costs before a line of code is written.",
-  primaryLabel = "Book a discovery session",
-  secondaryHref = "/solutions",
-  secondaryLabel = "See what we build",
-  id = "contact-cta",
+  headline = "Have a product idea?",
+  description = "Let’s turn it into something people can actually use.",
+  primaryLabel = "Start a Project",
+  secondaryHref = "/contact",
+  secondaryLabel = "Contact ZoloLabs",
+  id = "start-a-project",
 }: ContactCTAProps) {
   return (
-    <section
-      aria-labelledby={id}
-      className="contact-cta relative isolate overflow-hidden rounded-3xl border border-accent/25 px-6 py-12 sm:px-12 sm:py-14"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-accent/20 blur-3xl"
-      />
-      <div className="relative">
-        <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
-          Next step
-        </p>
-        <h2
-          id={id}
-          className="mt-3 max-w-2xl text-3xl font-bold tracking-tight text-heading sm:text-4xl"
-        >
-          {headline}
-        </h2>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-          {description}
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <ButtonLink href="/contact" variant="primary">
-            {primaryLabel}
-            <ArrowRightIcon className="h-4 w-4" />
-          </ButtonLink>
-          <ButtonLink href={secondaryHref} variant="secondary">
-            {secondaryLabel}
-          </ButtonLink>
+    <section className="contact-cta" aria-labelledby={id}>
+      <PointerGlow className="cta-light" range={8} />
+      <div className="container cta-inner">
+        <div>
+          <Reveal as="p" className="eyebrow">The next chapter</Reveal>
+          <h2 id={id}><TextReveal delay={80}>{headline}</TextReveal></h2>
+          <Reveal as="p" className="cta-description" delay={140}>{description}</Reveal>
         </div>
+        <Reveal className="cta-actions" delay={210}>
+          <ButtonLink href="/contact">{primaryLabel}<ArrowRightIcon /></ButtonLink>
+          <ButtonLink href={secondaryHref} variant="quiet">{secondaryLabel}<ArrowRightIcon /></ButtonLink>
+        </Reveal>
       </div>
     </section>
   );

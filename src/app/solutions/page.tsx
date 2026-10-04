@@ -1,94 +1,129 @@
-import type { Metadata } from "next";
-import { IndustryNav } from "@/components/solutions/IndustryNav";
-import { IndustrySection } from "@/components/solutions/IndustrySection";
+import Link from "next/link";
+import { Reveal } from "@/components/animations/Reveal";
+import { Stagger } from "@/components/animations/Stagger";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { ButtonLink } from "@/components/ui/Button";
-import { ContactCTA } from "@/components/ui/ContactCTA";
 import { ArrowRightIcon } from "@/components/ui/icons";
-import { industries, serviceTypes } from "@/data/industries";
+import { buildPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Solutions",
-  description:
-    "Custom software, AI automation, web applications and SaaS platforms for retail, hospitality, education and growing SMEs — scoped to your process and priced for an SME budget.",
-  alternates: { canonical: "/solutions" },
-};
+export const metadata = buildPageMetadata(
+  "Solutions",
+  "Mobile and web applications and custom business platforms designed around customer experiences, operational needs and opportunities for growth.",
+  "/solutions",
+);
 
-/**
- * One page, four anchorable industries. This replaces the previous
- * /solutions/[slug] route set (four near-identical pages) with a single
- * document that is easier to scan and cheaper to load.
- */
+const solutions = [
+  {
+    number: "01",
+    id: "mobile-applications",
+    title: "Mobile & Web Applications",
+    headline: "Bring your business closer to the people who use it.",
+    description:
+      "We build mobile apps and web applications around the way your customers and teams work. From the first interaction to the everyday tasks that matter, each experience is designed to be useful, intuitive and connected to your business.",
+    detail:
+      "Whether you are creating a mobile app, a browser-based product or a tool for your team, we help define the right experience, connect it with your existing systems and build a reliable foundation for what comes next.",
+    capabilities: [
+      "Customer applications",
+      "Responsive web applications",
+      "Marketplace applications",
+      "Booking applications",
+      "Business applications",
+      "E-commerce experiences",
+      "Location-based applications",
+      "API integrations",
+      "Cross-platform development",
+    ],
+    outcomes: [
+      "Reach customers on mobile and web",
+      "Digitize service delivery",
+      "Simplify customer interactions",
+      "Connect with existing systems",
+    ],
+  },
+  {
+    number: "02",
+    id: "business-platforms",
+    title: "Business Platforms",
+    headline: "Connect the work. Create room to grow.",
+    description:
+      "Disconnected spreadsheets, manual processes and fragmented tools make everyday work harder than it needs to be. We develop custom platforms that bring your operations, customers, data and workflows into one connected system.",
+    detail:
+      "Built around your actual processes, a business platform gives your team a clearer view of the work and a simpler way to manage it. We focus on the workflows that matter first, with a foundation that can evolve with the business.",
+    capabilities: [
+      "Booking and appointment systems",
+      "Customer management systems",
+      "Admin dashboards",
+      "Internal management platforms",
+      "Workflow automation",
+      "Service management systems",
+      "Analytics dashboards",
+      "Third-party integrations",
+    ],
+    outcomes: [
+      "Replace repetitive manual processes",
+      "Create a clearer view of operations",
+      "Connect teams and customer journeys",
+      "Build around your business workflows",
+    ],
+  },
+] as const;
+
 export default function SolutionsPage() {
   return (
-    <>
-      <header className="relative isolate overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="glow-top pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
-        />
+    <div className="internal-page solutions-page">
+      <PageHeader
+        eyebrow="Our solutions"
+        title={<>Digital products built for how businesses <span>actually work.</span></>}
+        description="ZoloLabs designs mobile and web applications and business platforms around real operational needs, customer experiences and opportunities for growth."
+      >
+        <ButtonLink href="/contact">Start a Project <ArrowRightIcon /></ButtonLink>
+        <Link href="#mobile-applications" className="text-link">Explore our solutions <span aria-hidden="true">↓</span></Link>
+      </PageHeader>
 
-        <div className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-12 sm:pt-20">
-          <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
-            Solutions
-          </p>
+      <div className="container">
+        <nav className="solution-jump-links" aria-label="Solutions on this page">
+          {solutions.map((solution) => (
+            <a href={`#${solution.id}`} key={solution.id}>
+              <span>{solution.number}</span>{solution.title}<span aria-hidden="true">↘</span>
+            </a>
+          ))}
+        </nav>
 
-          <h1 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight text-balance text-heading sm:text-5xl">
-            Software engineered to fit{" "}
-            <span className="text-brand">your industry</span>, not the other
-            way around.
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-muted">
-            Off-the-shelf platforms arrive bloated, priced per seat for companies
-            far bigger than yours, and shaped around a process you do not run. We
-            build the opposite: focused software mapped to how your business
-            already works, scoped to an SME budget, and released in stages.
-          </p>
-
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <ButtonLink href="/contact">
-              Book a discovery session
-              <ArrowRightIcon className="h-4 w-4" />
-            </ButtonLink>
-            <span className="text-sm text-muted">
-              Four practice areas, or ask the assistant anything.
-            </span>
-          </div>
-
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {serviceTypes.map((serviceType) => (
-              <li
-                key={serviceType}
-                className="rounded-full border border-line px-3.5 py-1.5 text-xs font-semibold tracking-[0.12em] text-muted uppercase"
-              >
-                {serviceType}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </header>
-
-      <IndustryNav />
-
-      <div className="mx-auto w-full max-w-6xl space-y-16 px-6 py-14">
-        {industries.map((industry, index) => (
-          <IndustrySection
-            key={industry.slug}
-            industry={industry}
-            index={index}
-          />
+        {solutions.map((solution) => (
+          <section className="solution-detail" id={solution.id} key={solution.id} aria-labelledby={`${solution.id}-title`}>
+            <Reveal className="solution-detail-heading">
+              <span className="solution-number">{solution.number}</span>
+              <h2 id={`${solution.id}-title`}>{solution.title}</h2>
+            </Reveal>
+            <div className="solution-detail-grid">
+              <Reveal className="solution-detail-copy" delay={60}>
+                <h3>{solution.headline}</h3>
+                <p>{solution.description}</p>
+                <p>{solution.detail}</p>
+                <div className="solution-outcomes">
+                  <p className="eyebrow">What this makes possible</p>
+                  <ul>
+                    {solution.outcomes.map((outcome) => <li key={outcome}><span aria-hidden="true">↗</span>{outcome}</li>)}
+                  </ul>
+                </div>
+                <Link href="/contact" className="text-link">Talk about your project <ArrowRightIcon /></Link>
+              </Reveal>
+              <Reveal className="solution-capabilities" variant="fade-left" delay={100}>
+                <p className="eyebrow">What we can build</p>
+                <Stagger as="ul" step={45}>{solution.capabilities.map((capability) => <li key={capability} data-reveal>{capability}<span aria-hidden="true">+</span></li>)}</Stagger>
+                <p className="solution-capability-note">The right scope starts with your business needs.</p>
+              </Reveal>
+            </div>
+          </section>
         ))}
       </div>
 
-      <div className="mx-auto w-full max-w-6xl px-6 pb-20">
-        <ContactCTA
-          headline="Tell us which bottleneck costs you the most."
-          description="Bring the process your current tools cannot handle. We will map the current state, name the constraint, and scope the first slice we can ship for your team."
-          secondaryLabel="Back to services"
-          secondaryHref="/#services"
-        />
-      </div>
-    </>
+      <section className="internal-cta" aria-labelledby="solutions-cta-title">
+        <Reveal className="container internal-cta-inner">
+          <div><p className="eyebrow">A useful place to start</p><h2 id="solutions-cta-title">Tell us what you&apos;re<br />trying to improve.</h2></div>
+          <ButtonLink href="/contact">Start a Project <ArrowRightIcon /></ButtonLink>
+        </Reveal>
+      </section>
+    </div>
   );
 }
-

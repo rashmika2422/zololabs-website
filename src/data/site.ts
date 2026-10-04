@@ -1,84 +1,59 @@
 export type Service = {
+  number: string;
   name: string;
   summary: string;
   detail: string;
+  href: string;
+  cta: string;
+  capabilities: string[];
 };
+export type ProcessStep = { title: string; description: string };
 
-export type ProcessStep = {
-  title: string;
-  description: string;
-};
-
-/**
- * Canonical origin used for metadata, OG tags, robots and the sitemap.
- * Set NEXT_PUBLIC_SITE_URL in .env.local before deploying to your own domain.
- */
+/** Canonical origin; configure NEXT_PUBLIC_SITE_URL for deployment. */
 export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://zololabs.com"
 ).replace(/\/+$/, "");
-
 export const siteName = "ZoloLabs";
-
 export const siteDescription =
-  "ZoloLabs is a software studio building custom software, AI automation, web applications and SaaS platforms for retail, hospitality, education and growing SMEs.";
-
-/** Primary navigation. Four destinations keeps the site scannable. */
+  "ZoloLabs designs and develops modern mobile and web applications, plus custom business platforms, to simplify operations, connect with customers and grow.";
 export const navLinks = [
+  { href: "/", label: "Home" },
   { href: "/solutions", label: "Solutions" },
-  { href: "/#services", label: "Services" },
-  { href: "/#process", label: "Process" },
+  { href: "/work", label: "Our Work" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
-
-/** The four things we build. Mirrors the service types used on solutions. */
 export const services: Service[] = [
   {
-    name: "Custom Software",
-    summary: "Systems built for your workflows",
-    detail:
-      "Bespoke internal tools and workflow systems designed for how your team operates, replacing clunky spreadsheets and workarounds.",
+    number: "01",
+    name: "Mobile Applications",
+    summary: "Mobile and web products designed for customers, teams and growing digital businesses.",
+    detail: "From mobile apps to responsive web applications, we build useful experiences around the people who rely on them.",
+    href: "/solutions#mobile-applications",
+    cta: "Explore Applications",
+    capabilities: ["Customer applications", "Marketplace applications", "Booking applications", "Business applications", "Location-based applications", "E-commerce applications", "API-connected applications", "Cross-platform mobile apps", "Responsive web applications"],
   },
   {
-    name: "Web Applications",
-    summary: "Apps people actually want to use",
-    detail:
-      "Fast, accessible portals, dashboards, and booking flows built to remove friction and save time for your staff and customers.",
-  },
-  {
-    name: "AI & Automation",
-    summary: "Automate the repetitive tasks",
-    detail:
-      "Handle document intake, quoting, and follow-ups automatically. Keep humans in the loop only when judgement is required.",
-  },
-  {
-    name: "SaaS Development",
-    summary: "Platforms built to scale",
-    detail:
-      "Multi-tenant products complete with billing, roles, and reporting. We help you turn your internal tools into a sellable product.",
+    number: "02",
+    name: "Business Platforms",
+    summary: "Custom platforms that connect operations, customers, data and workflows.",
+    detail: "Turn disconnected tools and manual processes into a connected system that gives your team clarity and control.",
+    href: "/solutions#business-platforms",
+    cta: "Explore Platforms",
+    capabilities: ["Booking systems", "Appointment platforms", "Admin dashboards", "Customer management", "Workflow automation", "Analytics", "Internal management systems", "Third-party integrations"],
   },
 ];
-
+export const principles = [
+  { title: "Business First", description: "We begin with the problem, not the technology." },
+  { title: "Product Thinking", description: "We design products around real users and measurable business needs." },
+  { title: "Modern Engineering", description: "We build maintainable, scalable and reliable systems using modern development practices." },
+  { title: "Quality Built In", description: "Testing, review and deployment are part of development—not an afterthought." },
+] as const;
 export const processSteps: ProcessStep[] = [
-  {
-    title: "Discovery session",
-    description:
-      "We map your current processes, pinpoint the real bottlenecks, and align on clear success metrics before any development starts.",
-  },
-  {
-    title: "Written scope and price",
-    description:
-      "Receive a detailed project scope, a fixed price, and a clear delivery plan before writing a single line of code.",
-  },
-  {
-    title: "Build, ship, hand over",
-    description:
-      "We deliver in stages, document everything, and train your team to ensure you fully own the final product.",
-  },
-];
-
-/** Short, factual claims for the hero — no client names, no invented numbers. */
-export const proofPoints: { value: string; label: string }[] = [
-  { value: "01", label: "Discovery before code" },
-  { value: "Fixed", label: "Price, quoted in writing" },
-  { value: "Yours", label: "Data and system ownership" },
+  { title: "Discover", description: "Understand the business, users and core problem." },
+  { title: "Design", description: "Define the product experience and system architecture." },
+  { title: "Develop", description: "Engineer the application using scalable and maintainable technologies." },
+  { title: "Test", description: "Validate functionality, usability, performance and reliability." },
+  { title: "Deploy", description: "Release the production system through a controlled deployment process." },
+  { title: "Support", description: "Maintain and improve the product as the business evolves." },
 ];

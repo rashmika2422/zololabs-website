@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { SiteExperience } from "@/components/layout/SiteExperience";
-import ChatWidget from "@/components/ChatWidget";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteDescription, siteName, siteUrl } from "@/data/site";
 import "./globals.css";
+import "@/components/layout/internal-pages.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,38 +17,28 @@ const ogImage = {
   url: "/branding/backgrounds/social-cover.png",
   width: 1200,
   height: 630,
-  alt: `${siteName} — software studio`,
+  alt: `${siteName} — Mobile & Web Applications and Business Platforms`,
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} · Custom software, AI automation and SaaS`,
-    template: `%s · ${siteName}`,
+    default: `${siteName} | Mobile & Web Applications | Business Platforms`,
+    template: `%s | ${siteName}`,
   },
   description: siteDescription,
   applicationName: siteName,
-  keywords: [
-    "custom software development",
-    "AI automation",
-    "web applications",
-    "SaaS development",
-    "SME software",
-    "retail software",
-    "hospitality software",
-    "education software",
-  ],
   openGraph: {
     type: "website",
     url: siteUrl,
     siteName,
-    title: `${siteName} · Software engineered to fit your business`,
+    title: `${siteName} | Mobile & Web Applications | Business Platforms`,
     description: siteDescription,
     images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteName} · Software engineered to fit your business`,
+    title: `${siteName} | Mobile & Web Applications | Business Platforms`,
     description: siteDescription,
     images: [ogImage.url],
   },
@@ -56,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f7fa",
+  themeColor: "#ffffff",
   colorScheme: "light",
 };
 
@@ -67,7 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteExperience>
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-accent-ink"
+            className="skip-link"
           >
             Skip to content
           </a>
@@ -77,10 +67,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <SiteFooter />
-          <ChatWidget />
         </SiteExperience>
       </body>
     </html>
   );
 }
-

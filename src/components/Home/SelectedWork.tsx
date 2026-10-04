@@ -1,9 +1,29 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { AmbientBackground } from "@/components/ui/AmbientBackground";
-import { FadeUp } from "@/components/animations/FadeUp";
+import { Reveal } from "@/components/animations/Reveal";
+import { TextReveal } from "@/components/animations/TextReveal";
+import { MobileCarousel } from "@/components/ui/MobileCarousel";
 import { ArrowRightIcon } from "@/components/ui/icons";
+import { ProjectCard } from "@/components/ui/ProjectCard";
+import { projects } from "@/data/projects";
+
 export default function SelectedWork() {
-  return <div data-theme="dark" className="work-band"><Section id="work" className="work-section relative isolate mx-auto w-full max-w-6xl px-6 py-16 sm:py-20"><AmbientBackground variant="work" /><SectionHeading eyebrow="Selected Work" title="Our studio, in digital form." description="A closer look at the ZoloLabs website." /><FadeUp className="mt-10"><article className="work-panel group overflow-hidden rounded-3xl border border-line bg-white/5"><div className="work-preview relative aspect-[3/2] overflow-hidden sm:aspect-[16/9]"><Image src="/projects/zololabs/website-preview.png" alt="ZoloLabs homepage with a light pale-blue background and floating blue glass sculpture" fill sizes="(max-width: 768px) 100vw, 1100px" className="object-cover object-top transition-transform duration-700 motion-safe:group-hover:scale-[1.035]" /><div aria-hidden="true" className="work-overlay" /></div><div className="flex flex-wrap items-center justify-between gap-6 p-6 sm:p-9"><div><p className="text-xs tracking-widest text-brand uppercase">Web experience</p><h3 className="mt-2 text-2xl font-semibold tracking-tight text-heading">ZoloLabs website</h3><p className="mt-2 text-sm text-muted">The digital home of our software studio.</p></div><Link href="/" className="inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-brand">View website <ArrowRightIcon className="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" /></Link></div></article></FadeUp></Section></div>;
+  return (
+    <section id="work" className="featured-work-band" aria-labelledby="work-title">
+      <div className="container selected-work section-space">
+        <div className="home-section-header">
+          <div>
+            <Reveal as="p" className="eyebrow">Featured work</Reveal>
+            <h2 id="work-title" className="section-heading">
+              <TextReveal>Real problems.</TextReveal>{" "}
+              <TextReveal delay={100}>Working solutions.</TextReveal>
+            </h2>
+          </div>
+          <Reveal delay={140}><Link href="/work" className="text-link">Explore Our Work<ArrowRightIcon /></Link></Reveal>
+        </div>
+        <MobileCarousel className="selected-work-carousel" label="Selected work">
+          {projects.map((project, index) => <ProjectCard key={project.slug} project={project} featured eager={index === 0} />)}
+        </MobileCarousel>
+      </div>
+    </section>
+  );
 }

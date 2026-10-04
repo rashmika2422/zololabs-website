@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { industries } from "./src/data/industries";
 
 const nextConfig: NextConfig = {
   // Nothing in this site needs the framework fingerprint in every response.
@@ -12,9 +11,9 @@ const nextConfig: NextConfig = {
     // The four industry detail pages were folded into /solutions#<slug>.
     // Permanent redirects keep old links, bookmarks and search results working.
     return [
-      ...industries.map((industry) => ({
-        source: `/solutions/${industry.slug}`,
-        destination: `/solutions#${industry.slug}`,
+      ...["retail", "hospitality", "education", "smes"].map((slug) => ({
+        source: `/solutions/${slug}`,
+        destination: "/solutions#business-platforms",
         permanent: true,
       })),
       { source: "/branding/logo.png", destination: "/branding/logos/zololabs-wordmark.png", permanent: true },
@@ -46,4 +45,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-

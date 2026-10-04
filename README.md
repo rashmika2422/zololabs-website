@@ -1,152 +1,80 @@
 # ZoloLabs website
 
-Next.js 16 (App Router) + React 19 + Tailwind CSS 4. Three pages, one shared shell, and Motion-powered interactions.
+ZoloLabs builds **Mobile Applications + Business Platforms**. This public website uses Next.js 16.3 (App Router), React 19, strict TypeScript, Tailwind CSS 4 and the existing Motion library.
 
-## Getting started
+## Development
 
 ```bash
 npm install
-cp .env.example .env.local   # then fill in the values
-npm run dev                  # http://localhost:3000
+cp .env.example .env.local   # only if you do not already have one
+npm run dev
 ```
 
 | Script | Purpose |
 | --- | --- |
-| `npm run dev` | Development server |
+| `npm run dev` | Local development server |
+| `npm run lint` | ESLint with Next.js and TypeScript rules |
+| `npm run typecheck` | Strict TypeScript verification |
+| `npm test` | Mocked inquiry, validation and notification regression tests |
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
-| `npm run lint` | ESLint (Next.js core-web-vitals + TypeScript rules) |
 
-## Pages
+## Public pages
 
 | Route | Contents |
 | --- | --- |
-| `/` | Hero, services, industries, process, closing CTA |
-| `/solutions` | All four industries on one page: `#retail`, `#hospitality`, `#education`, `#smes` |
-| `/contact` | Enquiry form (server action) and what happens next |
-| `/api/chat` | POST endpoint backing the assistant widget |
+| `/` | Dark hero and services, light TeaCare feature and principles, dark six-stage process and CTA |
+| `/solutions` | Mobile applications and business platforms, capabilities and outcomes |
+| `/work` | Case studies driven by typed project data |
+| `/work/teacare` | TeaCare challenge, solution, capabilities, technologies and live website |
+| `/about` | Company, engineering approach and mission |
+| `/contact` | Validated project inquiry form and submission feedback |
 
-The old `/solutions/<slug>` URLs 308-redirect to `/solutions#<slug>` (see `next.config.ts`).
+The internal pages use a light visual system, with a shared dark closing CTA/footer. The official logo is reused throughout. Navigation includes all five primary destinations and a mobile menu with keyboard support, Escape dismissal and scroll locking.
 
-## Layout
+Legacy `/solutions/{retail,hospitality,education,smes}` links permanently redirect to `/solutions#business-platforms`. Historic brand asset URLs still resolve through the existing redirects. `/api/chat` remains available for compatibility, with updated company grounding; the old floating assistant is omitted from the public shell.
 
-```
-src/
-  app/
-    layout.tsx              root shell: metadata, SiteHeader, SiteFooter, ChatWidget
-    page.tsx                home
-    solutions/page.tsx      all industries in one document
-    contact/page.tsx        contact page
-    contact/actions.ts      sendEnquiry server action (validation + delivery)
-    not-found.tsx           404
-    robots.ts, sitemap.ts   crawl metadata
-    api/chat/route.ts       DeepSeek-backed assistant endpoint
-  components/
-    layout/                 SiteHeader, SiteFooter (site chrome)
-    Home/                   homepage sections
-    solutions/              IndustryNav, IndustrySection
-    contact/                ContactForm (client component)
-    ui/                     Button, Card, Section, ContactCTA, icons
-    ChatWidget.tsx          floating assistant
-  data/
-    site.ts                 nav, services, process, proof points, site URL
-    industries.ts           per-industry problems and builds
-  lib/chatSystemPrompt.ts   assistant grounding
-```
+## Code and design
 
-## Conventions
+- `src/data/site.ts`: company positioning, two service records, navigation, principles and six process steps.
+- `src/data/projects.ts`: verified project records. Add a record and a matching case-study route to extend the portfolio.
+- `src/app/globals.css`: light/dark design tokens, shared typography, layout, buttons, CTA and footer.
+- `src/components/Home/home.css`: homepage composition and CSS product diagram.
+- `src/components/Home/storytelling.css`: desktop sticky principles/process and simpler mobile sequences.
+- `src/components/layout/navigation.css`: header transitions, scroll progress and animated mobile navigation.
+- `src/components/animations/`: server-rendered Reveal, TextReveal, Stagger, Parallax and PointerGlow markers sharing the SiteExperience controller.
+- `src/components/layout/internal-pages.css`: internal-page and project showcase styles.
+- `src/components/contact/contact.css`: contact layout and form states.
+- `src/components/layout/SiteExperience.tsx`: theme, progressive scroll reveals and bounded desktop effects. Content stays readable without JavaScript and motion respects the system preference.
+- Pages and buttons remain server components. Client components are limited to navigation, shared motion coordination, scroll story progression and the contact form.
 
-- **Copy lives in `src/data`.** Add an industry to `industries.ts` and it appears in the header
-  nav, footer, homepage grid, `/solutions` page and the assistant's knowledge automatically.
-- **Design tokens live in `src/app/globals.css`** (`ink`, `surface`, `raised`, `line`, `accent`).
-  Use `bg-surface`, `border-line`, `text-accent` rather than new hex values.
-- **Server components by default.** Client components are limited to `SiteHeader`, `ContactForm`
-  and `ChatWidget`.
-- **No conflicting utility classes.** Button variants are complete class strings; make sure
-  overrides do not fight each other (see `src/components/ui/Button.tsx`).
-- **Anchor offsets** are handled by `scroll-padding-top` in `globals.css` plus `scroll-mt-10` in
-  the `Section` component, so add new anchored sections through `Section`.
+No runtime dependencies were added. The hero visual is built in CSS. The TeaCare preview at `public/projects/teacare/website-preview.webp` is an optimized capture of its live public website, rather than a fictional interface. No project growth or performance statistics are claimed.
+
+## Motion behavior
+
+Reveals animate once using fade, translate, scale or a text/image mask. The hero uses a short stagger; featured imagery gets a longer mask reveal. Native wheel and touch scrolling remain in control. Desktop parallax is bounded at 24 pixels and runs only while the visual is in view; pointer glow is limited to fine pointers. Both effects are disabled on smaller/touch screens and with reduced motion. Ambient effects pause offscreen or while the tab is hidden. The mobile menu has a restrained open/close sequence, an animated hamburger and keyboard focus management.
+
+The Why and Process sections use sticky editorial headings on desktop and normal sequential layouts on mobile. The process line fills through a MotionValue; React updates only when the active step changes. Reduced motion keeps every piece of content visible and removes parallax, masks and ambient motion.
+
+TeaCare Services is the real featured project. Its buttons point to `/work/teacare` and `https://teacareservices.com`, with safe new-tab behavior on the external link. No additional images are required. New projects can optionally supply their own image through the typed project record.
 
 ## Environment
 
 | Variable | Used by | Notes |
 | --- | --- | --- |
-| `DEEPSEEK_API_KEY` | `/api/chat` | Assistant is disabled with a friendly message when unset |
-| `DEEPSEEK_BASE_URL` | `/api/chat` | Optional override, e.g. for a local mock |
-| `NEXT_PUBLIC_SITE_URL` | metadata, sitemap | Canonical origin; set before deploying |
-| `SUPABASE_URL` | `/contact`, notification retries | Project URL; server-only |
-| `SUPABASE_SECRET_KEY` | `/contact`, notification retries | Secret API key (`sb_secret_...`), or legacy service-role JWT; server-only |
-| `RESEND_API_KEY` | inquiry notifications | Email sending API key; server-only |
-| `INQUIRY_NOTIFICATION_FROM` | inquiry notifications | Sender on a verified Resend domain |
-| `INQUIRY_NOTIFICATION_TO` | inquiry notifications | Team email address(es), comma separated |
-| `CRON_SECRET` | `/api/inquiries/retry` | Bearer secret for a scheduled retry job |
-| `CONTACT_WEBHOOK_URL` | `/contact` | Optional JSON webhook alternative to Resend |
-| `CONTACT_EMAIL` | `/contact` | Shown as the direct contact address |
+| `NEXT_PUBLIC_SITE_URL` | Metadata and sitemap | Canonical origin; defaults to `https://zololabs.com` |
+| `CONTACT_EMAIL` | Contact page/action | Optional direct team email |
+| `SUPABASE_URL` | Inquiry storage/retries | Server-only project URL |
+| `SUPABASE_SECRET_KEY` | Inquiry storage/retries | Server-only secret/service-role key |
+| `RESEND_API_KEY` | Notifications | Server-only email provider key |
+| `INQUIRY_NOTIFICATION_FROM` | Notifications | Verified sender |
+| `INQUIRY_NOTIFICATION_TO` | Notifications | Team recipient(s), comma separated |
+| `CONTACT_WEBHOOK_URL` | Contact/notifications | Existing webhook alternative |
+| `CRON_SECRET` | Notification retry endpoint | Scheduled-job bearer secret |
+| `DEEPSEEK_API_KEY` | Existing chat API | Optional; widget is not rendered |
+| `DEEPSEEK_BASE_URL` | Existing chat API | Optional upstream override |
 
-## Assets
-
-Brand assets use descriptive paths under `public/branding/`; project previews live under
-`public/projects/`. All original numbered-image and logo URLs have permanent redirects
-in `next.config.ts`. Transparent PNGs retain their original pixels and alpha channels.
-The existing 1200×630 social cover is at `branding/backgrounds/social-cover.png`.
-
-### Design structure
-
-```text
-public/
-  branding/
-    logos/             # Wordmark and compact mark
-    hero/              # Main glass sculpture
-    services/          # Digital network and technology orb
-    backgrounds/       # Light/dark technology, network, social cover
-    decorative/        # Ring and glass orb
-  projects/
-    zololabs/          # Website preview
-src/
-  app/                 # Existing pages, metadata, API routes, global styles
-  components/
-    home/              # Hero, Services, Industries, Technology, Process,
-                       # ProcessStory, SelectedWork, GrowthVisual, home.css
-    layout/            # Shared header, footer, theme and route motion
-    animations/        # Existing reusable reveal, float, parallax, magnetic motion
-    ui/                # Shared buttons, cards, headings, atmosphere
-    solutions/         # Existing industry navigation and sections
-    contact/           # Existing form
-  data/                # Existing site and industry records
-  lib/                 # Existing inquiry and chat logic
-```
-
-### Files moved and renamed
-
-All eight existing `src/components/Home/*.tsx` files moved to
-`src/components/home/` with their filenames unchanged: `Hero`, `Services`,
-`Industries`, `Technology`, `Process`, `ProcessStory`, `SelectedWork`,
-`GrowthVisual`. `home.css` is new; it contains extracted homepage
-styles. No component content was discarded.
-
-| Previous public path | New public path |
-| --- | --- |
-| `branding/logo.png` | `branding/logos/zololabs-wordmark.png` |
-| `branding/logo_only.png` | `branding/logos/zololabs-mark.png` |
-| `branding/01.png` | `branding/backgrounds/dark-tech-background.png` |
-| `branding/02.png` | `branding/backgrounds/dark-network-background.png` |
-| `branding/03.png` | `branding/backgrounds/light-tech-background.png` |
-| `branding/04.png` | `branding/services/technology-network-orb.png` |
-| `branding/05.png` | `branding/decorative/technology-ring.png` |
-| `branding/06.png` | `branding/services/digital-network.png` |
-| `branding/07.png` | `branding/hero/hero-glass-sculpture.png` |
-| `branding/08.png` | `branding/decorative/glass-orb.png` |
-| `assets/zololabs/zololabs-website.png` | `projects/zololabs/website-preview.png` |
-
-The previously missing `branding/og-cover.png` was recovered from the repository
-as `branding/backgrounds/social-cover.png`; metadata and the legacy URL now resolve.
-
-The visual system is light first: pale hero, white services, blue-gray process,
-dark desktop project showcase, light gradient CTA, and navy footer. Mobile retains
-its compact navigation and process timeline and omits the self-referential website
-showcase as requested. Continuous motion and desktop pointer effects respect the
-system reduced-motion preference. Homepage-specific styles live in `home/home.css`;
-shared tokens, surfaces, typography, and animation keyframes remain in `globals.css`.
+Project type and optional phone are stored in the inquiry message and delivered through the existing notification flow. No database migration is required. The description accepts 20–1,800 characters to leave room within the existing 2,000-character database limit. Company/organization is now required by the public form; old stored inquiries remain compatible.
 
 ## Inquiry storage and notifications
 

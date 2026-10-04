@@ -1,18 +1,76 @@
 "use client";
-import { useRef, useState, type ReactNode } from "react";
+
+import { useRef, useState, useSyncExternalStore, type RefObject } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { useMotionPreference } from "@/components/ui/useMotionPreference";
-const steps = [
-  { title: "Idea", copy: "We map your workflow and find the real bottleneck. Discovery comes before code." },
-  { title: "Design", copy: "We agree the experience, scope, price, and delivery plan in writing." },
-  { title: "Build", copy: "We deliver in stages, with room for your team to review and shape the product." },
-  { title: "Launch", copy: "We document, train, and hand over. You own the system and your data." },
-];
-export function ProcessStory({ visual }: { visual: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
+import { processSteps } from "@/data/site";
+
+const PROCESS_MOTION_QUERY = "(prefers-reduced-motion: no-preference)";
+
+function subscribeProcessMotion(callback: () => void) {
+  const media = window.matchMedia(PROCESS_MOTION_QUERY);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
+function useProcessStoryMotion() {
+  return useSyncExternalStore(
+    subscribeProcessMotion,
+    () => window.matchMedia(PROCESS_MOTION_QUERY).matches,
+    () => false,
+  );
+}
+
+function ProcessProgress({
+  target,
+  onActiveChange,
+}: {
+  target: RefObject<HTMLOListElement | null>;
+  onActiveChange: (index: number) => void;
+}) {
+  const current = useRef(-1);
+  const { scrollYProgress } = useScroll({
+    target,
+    offset: ["start 62%", "end 62%"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", progress => {
+    const index = Math.min(processSteps.length - 1, Math.floor(progress * (processSteps.length - 1) + 0.35));
+    if (index !== current.current) {
+      current.current = index;
+      onActiveChange(index);
+    }
+  });
+
+  return <motion.span className="process-story-progress" style={{ scaleY: scrollYProgress }} />;
+}
+
+export function ProcessStory() {
+  const list = useRef<HTMLOListElement>(null);
   const [active, setActive] = useState(0);
-  const reduced = useMotionPreference();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start center", "end center"] });
-  useMotionValueEvent(scrollYProgress, "change", value => setActive(Math.min(3, Math.floor(value * 4))));
-  return <div ref={ref} className="process-story"><ol>{steps.map((step, index) => <li key={step.title} className="story-step" data-active={active === index}><span className="text-xs tracking-widest text-brand">0{index + 1}</span><h3>{step.title}</h3><p>{step.copy}</p></li>)}</ol><div className="story-sticky"><motion.div animate={reduced ? { rotate: 0, y: 0 } : { rotate: active * 3 - 4.5, y: active * -8, scale: .96 + active * .013, opacity: .7 + active * .1 }} transition={{ type: "spring", stiffness: 70, damping: 25 }}>{visual}</motion.div><p className="text-center text-xs tracking-[.25em] text-brand uppercase">{steps[active].title} → possibility in motion</p></div></div>;
+  const motionEnabled = useProcessStoryMotion();
+
+  return (
+    <div className="process-story" data-story-motion={motionEnabled}>
+      <div className="process-story-track" aria-hidden="true">
+        {motionEnabled && <ProcessProgress target={list} onActiveChange={setActive} />}
+      </div>
+      <ol ref={list} className="process-story-list">
+        {processSteps.map((step, index) => (
+          <li
+            key={step.title}
+            className="process-story-step"
+            data-state={!motionEnabled ? "complete" : index < active ? "complete" : index === active ? "current" : "upcoming"}
+          >
+            <span className="process-story-number" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div className="process-story-content" data-reveal="fade-up">
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
 }

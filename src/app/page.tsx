@@ -1,26 +1,13 @@
-import "@/components/home/home.css";
-import Technology from "@/components/home/Technology";
-import Hero from "@/components/home/Hero";
-import Industries from "@/components/home/Industries";
-import Process from "@/components/home/Process";
-import Services from "@/components/home/Services";
+import "@/components/Home/home.css";
+import Hero from "@/components/Home/Hero";
+import Intro from "@/components/Home/Intro";
+import Services from "@/components/Home/Services";
+import WhyZoloLabs from "@/components/Home/WhyZoloLabs";
+import SelectedWork from "@/components/Home/SelectedWork";
+import Process from "@/components/Home/Process";
 import { ContactCTA } from "@/components/ui/ContactCTA";
 
-export const metadata = {
-  alternates: { canonical: "/" },
-};
-
+export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Services />
-      <Technology />
-      <Industries />
-      <Process />
-      <div className="mx-auto w-full max-w-6xl px-6 pb-20">
-        <ContactCTA />
-      </div>
-    </>
-  );
+  return <><Hero /><Intro /><Services /><SelectedWork /><WhyZoloLabs /><Process /><ContactCTA /></>;
 }

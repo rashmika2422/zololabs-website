@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { after } from "next/server";
-import type { ContactFormState } from "./state";
+import { validateContactFields, type ContactFormState } from "./state";
 import {
   deliverInquiryNotification,
   hasInquiryStorage,
@@ -59,10 +59,12 @@ export async function sendEnquiry(
   _previousState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
-  const inquiry = {
+  const fields = {
     name: readField(formData, "name"),
     email: readField(formData, "email"),
     company: readField(formData, "company"),
+    phone: readField(formData, "phone"),
+    projectType: readField(formData, "projectType"),
     message: readField(formData, "message"),
   };
 
@@ -73,6 +75,25 @@ export async function sendEnquiry(
       message: "Thanks — your message is with the team.",
     };
   }
+
+  const fieldErrors = validateContactFields(fields);
+  if (Object.keys(fieldErrors).length) {
+    return { status: "error", message: "Please check the highlighted fields and try again.", fieldErrors };
+  }
+
+  // Preserve the deployed Supabase schema and existing notification payload.
+  // Reserve room within its 2,000-character message limit for project details.
+  const inquiry = {
+    name: fields.name,
+    email: fields.email,
+    company: fields.company,
+    message: [
+      `Project type: ${fields.projectType}`,
+      ...(fields.phone ? [`Phone: ${fields.phone}`] : []),
+      "",
+      fields.message,
+    ].join("\n"),
+  };
 
   const validationError = validateInquiry(inquiry);
   if (validationError) return { status: "error", message: validationError };
@@ -110,7 +131,7 @@ export async function sendEnquiry(
     }
     return {
       status: "success",
-      message: "Thanks — we have received your inquiry. We reply within one business day.",
+      message: "Thanks for telling us about your project. Our team will review your message and get back to you by email.",
     };
   } catch {
     console.error("[contact] inquiry could not be accepted");
