@@ -287,7 +287,7 @@ test("webhook-only installations receive project type and phone with their exist
   assert.equal(payload.name, input.name);
   assert.equal(payload.email, input.email);
   assert.equal(payload.company, input.company);
-  assert.equal(payload.source, "zololabs.com/contact");
+  assert.equal(payload.source, "zololabssolutions.com/contact");
   assert.equal(payload.message, `Project type: Business Platform\nPhone: +94 771234567\n\n${input.message}`);
 });
 

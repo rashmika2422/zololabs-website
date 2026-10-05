@@ -62,7 +62,7 @@ TeaCare Services is the real featured project. Its buttons point to `/work/teaca
 
 | Variable | Used by | Notes |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Metadata and sitemap | Canonical origin; defaults to `https://zololabs.com` |
+| `NEXT_PUBLIC_SITE_URL` | Metadata and sitemap | Canonical origin; defaults to `https://zololabssolutions.com` |
 | `CONTACT_EMAIL` | Contact page/action | Optional direct team email |
 | `SUPABASE_URL` | Inquiry storage/retries | Server-only project URL |
 | `SUPABASE_SECRET_KEY` | Inquiry storage/retries | Server-only secret/service-role key |

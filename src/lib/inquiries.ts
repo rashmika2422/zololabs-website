@@ -70,7 +70,7 @@ export async function sendInquiryWebhook(input: InquiryInput, record?: InquiryRe
   if (!endpoint) throw new InquiryError("webhook_configuration_missing");
   const response = await fetch(endpoint, {
     method: "POST", headers: { "Content-Type": "application/json", ...(record ? { "Idempotency-Key": `inquiry/${record.id}` } : {}) },
-    body: JSON.stringify({ ...input, ...(record ? { inquiryId: record.id } : {}), source: "zololabs.com/contact", submittedAt: record?.created_at ?? new Date().toISOString() }),
+    body: JSON.stringify({ ...input, ...(record ? { inquiryId: record.id } : {}), source: "zololabssolutions.com/contact", submittedAt: record?.created_at ?? new Date().toISOString() }),
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
   if (!response.ok) throw new InquiryError(`webhook_http_${response.status}`);

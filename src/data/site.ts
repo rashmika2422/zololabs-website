@@ -11,7 +11,7 @@ export type ProcessStep = { title: string; description: string };
 
 /** Canonical origin; configure NEXT_PUBLIC_SITE_URL for deployment. */
 export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://zololabs.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://zololabssolutions.com"
 ).replace(/\/+$/, "");
 export const siteName = "ZoloLabs";
 export const siteDescription =
