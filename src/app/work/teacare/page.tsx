@@ -10,8 +10,8 @@ import { teaCareProject as project } from "@/data/projects";
 import { buildPageMetadata } from "@/lib/metadata";
 
 export const metadata = buildPageMetadata(
-  "TeaCare Services — Business Platform",
-  project.description,
+  "TeaCare Services Website Project",
+  "See how ZoloLabs designed and developed the TeaCare Services digital platform using modern web technologies.",
   "/work/teacare",
 );
 

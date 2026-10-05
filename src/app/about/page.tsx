@@ -5,10 +5,11 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { ButtonLink } from "@/components/ui/Button";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { buildPageMetadata } from "@/lib/metadata";
+import { siteName } from "@/data/site";
 
 export const metadata = buildPageMetadata(
-  "About",
-  "ZoloLabs is a software engineering company focused on mobile and web applications and custom business platforms, built around real business problems.",
+  `About ${siteName}`,
+  "Learn about ZoloLabs, a Sri Lankan software development team building modern web applications, mobile applications, business platforms and custom digital solutions.",
   "/about",
 );
 

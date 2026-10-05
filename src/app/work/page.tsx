@@ -8,8 +8,8 @@ import { projects } from "@/data/projects";
 import { buildPageMetadata } from "@/lib/metadata";
 
 export const metadata = buildPageMetadata(
-  "Our Work",
-  "Explore TeaCare Services client work, the Ceylon Heritage Gems luxury e-commerce concept and the Bloodline Studio demo.",
+  "Software Projects & Portfolio",
+  "Explore software projects, websites, web applications and digital platforms designed and developed by ZoloLabs.",
   "/work",
 );
 

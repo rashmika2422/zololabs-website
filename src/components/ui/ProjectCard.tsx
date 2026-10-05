@@ -78,17 +78,17 @@ export function ProjectCard({
           ) : null}
           <Reveal className="project-card-actions" delay={260}>
             {project.caseStudyPath ? (
-              <Link href={project.caseStudyPath} className={buttonClass("primary")}>
+              <Link href={project.caseStudyPath} className={buttonClass("primary")} aria-label={`View Case Study: ${project.name}`}>
                 View Case Study <ArrowRightIcon />
               </Link>
             ) : project.liveUrl ? (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("primary")}>
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("primary")} aria-label={`Explore Live Demo: ${project.name} (opens in a new tab)`}>
                 Explore Live Demo <span aria-hidden="true">↗</span>
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             ) : null}
             {project.caseStudyPath && project.liveUrl ? (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary")}>
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary")} aria-label={`Visit Live Site: ${project.name} (opens in a new tab)`}>
                 Visit Live Site <span aria-hidden="true">↗</span>
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>

@@ -5,16 +5,16 @@ const socialImage = {
   url: "/branding/backgrounds/social-cover.png",
   width: 1200,
   height: 630,
-  alt: `${siteName} — Mobile & Web Applications and Business Platforms`,
+  alt: `${siteName} — Software Development Company in Sri Lanka`,
 };
 
 /** Nested social metadata replaces layout values; each page supplies the full set. */
 export function buildPageMetadata(
-  title: string,
+  title: string | { absolute: string },
   description: string,
   path: `/${string}`,
 ): Metadata {
-  const socialTitle = `${title} | ${siteName}`;
+  const socialTitle = typeof title === "string" ? `${title} | ${siteName}` : title.absolute;
 
   return {
     title,
@@ -26,6 +26,7 @@ export function buildPageMetadata(
       url: path,
       type: "website",
       siteName,
+      locale: "en_LK",
       images: [socialImage],
     },
     twitter: {

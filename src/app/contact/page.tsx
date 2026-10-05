@@ -1,12 +1,13 @@
 import { buildPageMetadata } from "@/lib/metadata";
+import { siteName } from "@/data/site";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import "@/components/contact/contact.css";
 
 export const metadata = buildPageMetadata(
-  "Contact",
-  "Start a conversation with ZoloLabs about your mobile app, web application, business platform or existing product. Tell us what you want to improve.",
+  `Contact ${siteName}`,
+  "Contact ZoloLabs to discuss your website, web application, mobile application, business platform or custom software project.",
   "/contact",
 );
 

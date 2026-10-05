@@ -7,8 +7,8 @@ import { ArrowRightIcon } from "@/components/ui/icons";
 import { buildPageMetadata } from "@/lib/metadata";
 
 export const metadata = buildPageMetadata(
-  "Solutions",
-  "Mobile and web applications and custom business platforms designed around customer experiences, operational needs and opportunities for growth.",
+  "Software Development Solutions",
+  "Explore ZoloLabs software development services including web applications, mobile applications, business platforms, corporate websites and custom software solutions.",
   "/solutions",
 );
 

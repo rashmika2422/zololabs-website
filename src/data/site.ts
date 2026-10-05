@@ -15,7 +15,7 @@ export const siteUrl = (
 ).replace(/\/+$/, "");
 export const siteName = "ZoloLabs";
 export const siteDescription =
-  "ZoloLabs designs and develops modern mobile and web applications, plus custom business platforms, to simplify operations, connect with customers and grow.";
+  "ZoloLabs is a software development company in Sri Lanka building modern web applications, mobile applications, business platforms, and custom digital solutions.";
 export const navLinks = [
   { href: "/", label: "Home" },
   { href: "/solutions", label: "Solutions" },
