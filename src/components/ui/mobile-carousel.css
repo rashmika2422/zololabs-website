@@ -105,17 +105,6 @@
   .principle-story-row[data-carousel-active="true"] h3 { color: var(--heading-color); }
   .principle-story-number { color: var(--brand-blue); }
 
-  .process-story .process-story-track { display: none; }
-  .process-story-list > .process-story-step {
-    display: flex;
-    flex-direction: column;
-    min-height: 240px;
-    gap: 22px;
-    padding: 26px;
-  }
-  .process-story-number { border-color: var(--accent-border); color: var(--brand-blue); }
-  .process-story-list > .process-story-step h3 { color: var(--heading-color); }
-
 }
 
 @media (max-width: 600px) {
