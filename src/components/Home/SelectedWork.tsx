@@ -12,16 +12,19 @@ export default function SelectedWork() {
       <div className="container selected-work section-space">
         <div className="home-section-header">
           <div>
-            <Reveal as="p" className="eyebrow">Featured work</Reveal>
+            <Reveal as="p" className="eyebrow">Selected work</Reveal>
             <h2 id="work-title" className="section-heading">
-              <TextReveal>Real problems.</TextReveal>{" "}
-              <TextReveal delay={100}>Working solutions.</TextReveal>
+              <TextReveal>Work built around</TextReveal>{" "}
+              <TextReveal delay={100}>real problems and ideas.</TextReveal>
             </h2>
+            <Reveal as="p" className="selected-work-lede" delay={140}>
+              Client solutions and ZoloLabs experiments that explore better ways to design, build and experience digital products.
+            </Reveal>
           </div>
           <Reveal delay={140}><Link href="/work" className="text-link">Explore Our Work<ArrowRightIcon /></Link></Reveal>
         </div>
-        <MobileCarousel className="selected-work-carousel" label="Selected work">
-          {projects.map((project, index) => <ProjectCard key={project.slug} project={project} featured eager={index === 0} />)}
+        <MobileCarousel className="selected-work-carousel" label="Selected work" showCounter>
+          {projects.map((project, index) => <ProjectCard key={project.slug} project={project} number={index + 1} featured />)}
         </MobileCarousel>
       </div>
     </section>

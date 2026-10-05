@@ -3,8 +3,9 @@
 import { useRef, useState, useSyncExternalStore, type RefObject } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { processSteps } from "@/data/site";
+import { MobileCarousel } from "@/components/ui/MobileCarousel";
 
-const PROCESS_MOTION_QUERY = "(prefers-reduced-motion: no-preference)";
+const PROCESS_MOTION_QUERY = "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 
 function subscribeProcessMotion(callback: () => void) {
   const media = window.matchMedia(PROCESS_MOTION_QUERY);
@@ -54,7 +55,7 @@ export function ProcessStory() {
       <div className="process-story-track" aria-hidden="true">
         {motionEnabled && <ProcessProgress target={list} onActiveChange={setActive} />}
       </div>
-      <ol ref={list} className="process-story-list">
+      <MobileCarousel as="ol" trackRef={list} className="process-story-list" label="How we work" onActiveChange={setActive} showCounter>
         {processSteps.map((step, index) => (
           <li
             key={step.title}
@@ -70,7 +71,7 @@ export function ProcessStory() {
             </div>
           </li>
         ))}
-      </ol>
+      </MobileCarousel>
     </div>
   );
 }

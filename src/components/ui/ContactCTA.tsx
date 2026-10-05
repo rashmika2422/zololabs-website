@@ -31,7 +31,7 @@ export function ContactCTA({
           <Reveal as="p" className="cta-description" delay={140}>{description}</Reveal>
         </div>
         <Reveal className="cta-actions" delay={210}>
-          <ButtonLink href="/contact">{primaryLabel}<ArrowRightIcon /></ButtonLink>
+          <ButtonLink href="/contact" variant="inverted">{primaryLabel}<ArrowRightIcon /></ButtonLink>
           <ButtonLink href={secondaryHref} variant="quiet">{secondaryLabel}<ArrowRightIcon /></ButtonLink>
         </Reveal>
       </div>

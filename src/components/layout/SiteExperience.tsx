@@ -94,9 +94,9 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       const bounds = element.getBoundingClientRect();
       // Already-visible content never waits for an observer or becomes concealed.
       if (bounds.top < 0) reveal(element, false);
-      else if (bounds.top < window.innerHeight) reveal(element);
+      else if (bounds.top < window.innerHeight && bounds.left < window.innerWidth && bounds.right > 0) reveal(element);
       else {
-        if (bounds.top >= window.innerHeight) element.classList.add("reveal-pending");
+        element.classList.add("reveal-pending");
         observer.observe(element);
       }
     }

@@ -9,7 +9,7 @@ import { buildPageMetadata } from "@/lib/metadata";
 
 export const metadata = buildPageMetadata(
   "Our Work",
-  "Explore ZoloLabs projects, including the TeaCare Services business platform and Bloodline Studio demo.",
+  "Explore TeaCare Services client work, the Ceylon Heritage Gems luxury e-commerce concept and the Bloodline Studio demo.",
   "/work",
 );
 
@@ -18,16 +18,16 @@ export default function WorkPage() {
     <div className="internal-page work-page">
       <PageHeader
         eyebrow="Selected work"
-        title={<>Work built around<br /><span>real problems.</span></>}
-        description="A closer look at the products we build, the challenges behind them and the engineering that brings them together."
+        title={<>Work built around<br /><span>real problems and ideas.</span></>}
+        description="Client solutions and ZoloLabs experiments that explore better ways to design, build and experience digital products."
       />
       <section className="container work-projects" aria-labelledby="work-projects-title">
         <Reveal className="work-index-label">
           <h2 id="work-projects-title">Selected projects</h2>
-          <span>Client project + studio demo</span>
+          <span>01 client project · 02 studio demos</span>
         </Reveal>
-        <MobileCarousel className="selected-work-carousel" label="Our work">
-          {projects.map((project, index) => <ProjectCard key={project.slug} project={project} eager={index === 0} />)}
+        <MobileCarousel className="selected-work-carousel" label="Our work" showCounter>
+          {projects.map((project, index) => <ProjectCard key={project.slug} project={project} number={index + 1} eager={index === 0} />)}
         </MobileCarousel>
       </section>
       <section className="internal-cta" aria-labelledby="work-cta-title">

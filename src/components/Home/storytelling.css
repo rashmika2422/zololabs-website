@@ -3,12 +3,13 @@
 }
 
 .why-section {
-  background: var(--accent-soft);
+  background: radial-gradient(ellipse at 0% 55%, #bfdbfe60, transparent 52%), linear-gradient(110deg, var(--accent-soft), var(--page-bg) 78%);
   border-bottom: 1px solid var(--border-color);
 }
 
 .process-section {
-  background: var(--page-bg);
+  background-color: var(--page-bg);
+  background-image: var(--brand-wash-soft);
 }
 
 .principle-story-layout,

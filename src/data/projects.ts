@@ -11,7 +11,8 @@ export type Project = {
   technologies: readonly string[];
   capabilities: readonly { title: string; description: string }[];
   liveUrl?: string;
-  image?: { src: string; alt: string };
+  demoNote?: string;
+  image?: { src: string; alt: string; aspectRatio?: string };
 };
 
 export const teaCareProject: Project = {
@@ -58,6 +59,34 @@ export const teaCareProject: Project = {
   },
 };
 
+export const ceylonGemsProject: Project = {
+  slug: "ceylon-heritage-gems",
+  name: "Ceylon Heritage Gems",
+  industry: "Gemstone Boutique Concept",
+  category: "Luxury E-Commerce Experience",
+  sourceLabel: "ZoloLabs Demo",
+  description:
+    "A luxury e-commerce concept created for a Ceylon gemstone boutique, combining premium product presentation, collection discovery, interactive product details and heritage-driven storytelling.",
+  challenge:
+    "Explore how a digital boutique can bring clarity, character and a premium browsing experience to high-value products.",
+  solution:
+    "An experimental storefront combining refined imagery, collection browsing, product-detail and modal interactions, heritage storytelling and responsive frontend motion.",
+  technologies: [],
+  capabilities: [
+    { title: "Collection discovery", description: "Browse a concept gemstone collection with premium product presentation." },
+    { title: "Product interactions", description: "Explore product details, modal interactions and certification-style demo information." },
+    { title: "Heritage storytelling", description: "Refined typography, imagery and scroll-triggered motion create a distinctive boutique experience." },
+  ],
+  demoNote:
+    "Concept only. No real gemstones are sold; prices, testimonials, certificates and business details are illustrative.",
+  liveUrl: "https://ceylongemsdemo.netlify.app",
+  image: {
+    src: "/projects/ceylongemsdemo/ceylongems.png",
+    alt: "Ceylon Heritage Gems demo website, a luxury gemstone boutique concept",
+    aspectRatio: "2880 / 1628",
+  },
+};
+
 export const bloodlineProject: Project = {
   slug: "bloodline-studio",
   name: "Bloodline Studio",
@@ -65,7 +94,7 @@ export const bloodlineProject: Project = {
   category: "Creative Digital Experience",
   sourceLabel: "ZoloLabs Demo",
   description:
-    "A ZoloLabs demo exploring an expressive digital presence for a creative studio.",
+    "An immersive recording-studio website concept exploring cinematic imagery, typography, motion, interactive scrolling and modern service presentation.",
   challenge:
     "Explore a distinctive digital direction for a creative studio concept.",
   solution:
@@ -75,5 +104,5 @@ export const bloodlineProject: Project = {
   liveUrl: "https://bloodline-studio-website.vercel.app",
 };
 
-/** Add verified projects here; cards and the work index share this source. */
-export const projects: readonly Project[] = [teaCareProject, bloodlineProject];
+/** Keep client work and explicitly labelled studio concepts in editorial order. */
+export const projects: readonly Project[] = [teaCareProject, ceylonGemsProject, bloodlineProject];

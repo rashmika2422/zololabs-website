@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/animations/Reveal";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { Parallax } from "@/components/animations/Parallax";
@@ -11,6 +12,15 @@ export default function Hero() {
   return (
     <section className="home-hero" aria-labelledby="hero-title">
       <div className="hero-grid" aria-hidden="true" />
+      <div className="brand-network-orb hero-network-orb" aria-hidden="true">
+        <Image
+          src="/branding/services/technology-network-orb.png"
+          alt=""
+          width={1254}
+          height={1254}
+          sizes="(max-width: 600px) 440px, (max-width: 900px) 520px, (max-width: 1440px) 54vw, 740px"
+        />
+      </div>
       <PointerGlow className="hero-light" range={10} data-motion-mobile="true" />
       <div className="container hero-composition">
         <div className="hero-copy">

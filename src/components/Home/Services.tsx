@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/animations/Reveal";
+import { MobileCarousel } from "@/components/ui/MobileCarousel";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { services } from "@/data/site";
 
@@ -26,6 +28,15 @@ function ServiceSymbol({ mobile }: { mobile: boolean }) {
 export default function Services() {
   return (
     <section id="services" className="home-services-band" aria-labelledby="services-title">
+      <div className="brand-network-orb services-network-orb" aria-hidden="true">
+        <Image
+          src="/branding/services/technology-network-orb.png"
+          alt=""
+          width={1254}
+          height={1254}
+          sizes="(max-width: 600px) 300px, 480px"
+        />
+      </div>
       <div className="container home-services section-space">
         <div className="home-section-header">
           <Reveal>
@@ -36,7 +47,7 @@ export default function Services() {
             Focused expertise, from the experience<br className="desktop-break" /> in your hand to the systems behind it.
           </Reveal>
         </div>
-        <div className="service-grid" data-stagger={110}>
+        <MobileCarousel className="service-grid" label="Our solutions" stagger={110}>
           {services.map((service, index) => (
             <Link href={service.href} key={service.number} className="service-card" data-reveal="scale">
               <div className="service-card-top"><span className="service-number">{service.number}</span><ServiceSymbol mobile={index === 0} /></div>
@@ -47,7 +58,7 @@ export default function Services() {
               <span className="service-link">{service.cta}<ArrowRightIcon /></span>
             </Link>
           ))}
-        </div>
+        </MobileCarousel>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, createElement, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { Children, createElement, useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from "react";
 
 type MobileCarouselProps = {
   as?: "div" | "ol" | "ul";
@@ -10,6 +10,7 @@ type MobileCarouselProps = {
   stagger?: number;
   trackRef?: RefObject<HTMLElement | null>;
   onActiveChange?: (index: number) => void;
+  showCounter?: boolean;
 };
 
 export function MobileCarousel({
@@ -20,6 +21,7 @@ export function MobileCarousel({
   stagger,
   trackRef,
   onActiveChange,
+  showCounter = false,
 }: MobileCarouselProps) {
   const internalTrack = useRef<HTMLElement>(null);
   const track = trackRef ?? internalTrack;
@@ -30,18 +32,29 @@ export function MobileCarousel({
     const element = track.current;
     if (!element || count < 2) return;
 
+    const mobile = matchMedia("(max-width: 767px)");
+    let current = -1;
     let frame = 0;
     const updateActive = () => {
       if (frame) cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const slides = Array.from(element.children) as HTMLElement[];
+        if (!mobile.matches) {
+          slides.forEach(slide => { delete slide.dataset.carouselActive; });
+          current = -1;
+          return;
+        }
         const padding = Number.parseFloat(getComputedStyle(element).scrollPaddingLeft) || 0;
-        const snapPoint = element.getBoundingClientRect().left + padding;
+        const trackLeft = element.getBoundingClientRect().left;
+        const maxScroll = element.scrollWidth - element.clientWidth;
         let nextActive = 0;
         let nearestDistance = Number.POSITIVE_INFINITY;
 
         slides.forEach((slide, index) => {
-          const distance = Math.abs(slide.getBoundingClientRect().left - snapPoint);
+          // The last slide may stop at the track's end before reaching its ideal snap point.
+          const snapOffset = Math.max(0, Math.min(maxScroll,
+            slide.getBoundingClientRect().left - trackLeft + element.scrollLeft - padding));
+          const distance = Math.abs(element.scrollLeft - snapOffset);
           if (distance < nearestDistance) {
             nearestDistance = distance;
             nextActive = index;
@@ -51,8 +64,11 @@ export function MobileCarousel({
         slides.forEach((slide, index) => {
           slide.dataset.carouselActive = String(index === nextActive);
         });
-        setActive(nextActive);
-        onActiveChange?.(nextActive);
+        if (current !== nextActive) {
+          current = nextActive;
+          setActive(nextActive);
+          onActiveChange?.(nextActive);
+        }
       });
     };
 
@@ -81,15 +97,30 @@ export function MobileCarousel({
     element.scrollTo({ left, behavior });
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.target !== event.currentTarget || !matchMedia("(max-width: 767px)").matches) return;
+    const next = event.key === "ArrowRight" ? Math.min(count - 1, active + 1)
+      : event.key === "ArrowLeft" ? Math.max(0, active - 1)
+      : event.key === "Home" ? 0 : event.key === "End" ? count - 1 : null;
+    if (next === null) return;
+    event.preventDefault();
+    scrollToSlide(next);
+  };
+
   return (
     <div className="mobile-carousel" role="region" aria-roledescription="carousel" aria-label={label}>
       {createElement(as, {
         ref: track,
         className: `mobile-carousel-track ${className}`.trim(),
         "data-stagger": stagger,
+        tabIndex: 0,
+        onKeyDown: handleKeyDown,
       }, children)}
       {count > 1 ? (
         <div className="mobile-carousel-pagination" aria-label={`${label} slides`}>
+          {showCounter ? <span className="mobile-carousel-counter" aria-live="polite" aria-atomic="true">
+            <span className="sr-only">Item </span>{String(active + 1).padStart(2, "0")}<span aria-hidden="true"> / </span><span className="sr-only"> of </span>{String(count).padStart(2, "0")}
+          </span> : null}
           {Array.from({ length: count }, (_, index) => (
             <button
               key={index}

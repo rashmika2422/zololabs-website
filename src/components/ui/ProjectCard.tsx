@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Parallax } from "@/components/animations/Parallax";
 import { Reveal } from "@/components/animations/Reveal";
+import { TextReveal } from "@/components/animations/TextReveal";
 import type { Project } from "@/data/projects";
 import { buttonClass } from "@/components/ui/Button";
 import { ArrowRightIcon } from "@/components/ui/icons";
@@ -8,6 +9,7 @@ import { ProjectVisual } from "./ProjectVisual";
 
 type ProjectCardProps = {
   project: Project;
+  number: number;
   variant?: "light" | "dark";
   featured?: boolean;
   eager?: boolean;
@@ -15,25 +17,27 @@ type ProjectCardProps = {
 
 export function ProjectCard({
   project,
+  number,
   variant = "light",
   featured = false,
   eager = false,
 }: ProjectCardProps) {
   const projectVisual = (
     <>
-      <ProjectVisual project={project} eager={eager} />
+      <ProjectVisual project={project} eager={eager} editorial />
       <span className="project-visual-arrow" aria-hidden="true"><ArrowRightIcon /></span>
-      <span className="project-image-caption" aria-hidden="true">{project.caseStudyPath ? "View Project" : "View Demo"} <span>↗</span></span>
+      <span className="project-image-caption" aria-hidden="true">{project.caseStudyPath ? "View Project" : "Explore Demo"} <span>↗</span></span>
     </>
   );
 
   return (
     <article
       className={`project-card project-card-${variant}${featured ? " project-card-featured" : ""}`}
+      aria-labelledby={`project-${project.slug}-title`}
     >
       <Reveal className="project-card-label" duration={550}>
-        <span>{project.sourceLabel}</span>
-        <span>{project.category}</span>
+        <span className="project-number" aria-hidden="true">{String(number).padStart(2, "0")}</span>
+        <span className="project-source">{project.sourceLabel}</span>
       </Reveal>
       <div className="project-card-media">
         <Parallax amount={18}>
@@ -53,13 +57,14 @@ export function ProjectCard({
         </Parallax>
       </div>
       <div className="project-card-content">
-        <Reveal className="project-card-intro" delay={100}>
+        <Reveal className="project-card-intro" delay={200}>
           <p className="eyebrow">{project.category}</p>
-          <h3>{project.name}</h3>
+          <h3 id={`project-${project.slug}-title`}><TextReveal delay={220}>{project.name}</TextReveal></h3>
           <p className="project-card-industry">{project.industry}</p>
         </Reveal>
-        <Reveal className="project-card-description" delay={180}>
+        <Reveal className="project-card-description" delay={280}>
           <p>{project.description}</p>
+          {project.demoNote ? <p className="project-demo-note">{project.demoNote}</p> : null}
           {!featured ? (
             <dl className="project-card-details">
               <div><dt>Challenge</dt><dd>{project.challenge}</dd></div>
@@ -78,7 +83,7 @@ export function ProjectCard({
               </Link>
             ) : project.liveUrl ? (
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={buttonClass("primary")}>
-                View Live Demo <ArrowRightIcon />
+                Explore Live Demo <span aria-hidden="true">↗</span>
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             ) : null}
