@@ -22,12 +22,22 @@ const ogImage = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+
   title: {
     default: `${siteName} | Mobile & Web Applications | Business Platforms`,
     template: `%s | ${siteName}`,
   },
+
   description: siteDescription,
+
   applicationName: siteName,
+
+  icons: {
+    icon: "/branding/logos/zololabs-mark.png",
+    shortcut: "/branding/logos/zololabs-mark.png",
+    apple: "/branding/logos/zololabs-mark.png",
+  },
+
   openGraph: {
     type: "website",
     url: siteUrl,
@@ -36,13 +46,18 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [ogImage],
   },
+
   twitter: {
     card: "summary_large_image",
     title: `${siteName} | Mobile & Web Applications | Business Platforms`,
     description: siteDescription,
     images: [ogImage.url],
   },
-  robots: { index: true, follow: true },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {
@@ -55,17 +70,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${geistSans.variable} antialiased`}>
       <body>
         <SiteExperience>
-          <a
-            href="#main"
-            className="skip-link"
-          >
+          <a href="#main" className="skip-link">
             Skip to content
           </a>
+
           <SiteHeader />
-          {/* Page components render sections; the layout owns the landmark. */}
+
           <main id="main" className="flex flex-1 flex-col">
             {children}
           </main>
+
           <SiteFooter />
         </SiteExperience>
       </body>
