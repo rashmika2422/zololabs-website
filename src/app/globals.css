@@ -118,7 +118,7 @@
 .cta-description { color: #dbeafe; font-size: clamp(17px, 2vw, 23px); margin-top: 17px; line-height: 1.6; }
 .cta-actions { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
 .site-footer { background: #0f172a; color: #cbd5e1; --heading-color: #ffffff; --body-color: #e2e8f0; --muted-color: #cbd5e1; --subtle-color: #94a3b8; --brand-text: #60a5fa; --border-color: #ffffff18; }
-.site-footer .brand-logo img { filter: brightness(0) invert(1); }
+.site-footer .brand-logo { padding: 10px 12px; border-radius: 6px; background: var(--panel-bg); }
 .footer-contact { transition: color 200ms ease; }
 .site-footer .footer-contact:hover { color: var(--brand-light); }
 .footer-main { display: grid; grid-template-columns: 1.1fr 1fr .9fr; gap: 60px; padding-block: 64px 56px; }
