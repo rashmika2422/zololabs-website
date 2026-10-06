@@ -25,7 +25,7 @@ export function buildPageMetadata(
       description,
       url: path,
       type: "website",
-      siteName,
+      siteName: `${siteName} Solutions`,
       locale: "en_LK",
       images: [socialImage],
     },

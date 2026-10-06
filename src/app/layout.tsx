@@ -13,7 +13,7 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const defaultTitle = `${siteName} | Software Development Company in Sri Lanka`;
+const defaultTitle = `${siteName} Solutions | Software Development Company in Sri Lanka`;
 
 const ogImage = {
   url: "/branding/backgrounds/social-cover.png",
@@ -27,15 +27,20 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Organization",
-      name: siteName,
-      url: siteUrl,
-      logo: `${siteUrl}/branding/logos/zololabs-mark.png`,
-      description: siteDescription,
+      "@id": `${siteUrl}/#organization`,
+      name: `${siteName} Solutions`,
+      url: `${siteUrl}/`,
+      logo: `${siteUrl}/icon.png`,
+      description:
+        "ZoloLabs is a software development company in Sri Lanka specializing in custom software, mobile applications, web applications and business platforms.",
     },
     {
       "@type": "WebSite",
-      name: siteName,
-      url: siteUrl,
+      "@id": `${siteUrl}/#website`,
+      name: `${siteName} Solutions`,
+      alternateName: siteName,
+      url: `${siteUrl}/`,
+      publisher: { "@id": `${siteUrl}/#organization` },
     },
   ],
 };
@@ -50,7 +55,7 @@ export const metadata: Metadata = {
 
   description: siteDescription,
 
-  applicationName: siteName,
+  applicationName: `${siteName} Solutions`,
 
   alternates: { canonical: "/" },
 
@@ -59,15 +64,14 @@ export const metadata: Metadata = {
   publisher: siteName,
 
   icons: {
-    icon: "/branding/logos/zololabs-mark.png",
-    shortcut: "/branding/logos/zololabs-mark.png",
+    icon: "/icon.png",
     apple: "/branding/logos/zololabs-mark.png",
   },
 
   openGraph: {
     type: "website",
-    url: siteUrl,
-    siteName,
+    url: `${siteUrl}/`,
+    siteName: `${siteName} Solutions`,
     locale: "en_LK",
     title: defaultTitle,
     description: siteDescription,
