@@ -57,3 +57,42 @@ export const processSteps: ProcessStep[] = [
   { title: "Deploy", description: "Release the production system through a controlled deployment process." },
   { title: "Support", description: "Maintain and improve the product as the business evolves." },
 ];
+export const contactDetails = {
+  email: {
+    label: "info@zololabssolutions.com",
+    href: "mailto:info@zololabssolutions.com",
+  },
+
+  phones: [
+    {
+      label: "+94 76 109 5069",
+      href: "tel:+94761095069",
+    },
+    {
+      label: "+94 75 568 8757",
+      href: "tel:+94755688757",
+    },
+  ],
+
+  socials: {
+    instagram: {
+      label: "@zololabs",
+      href: "https://instagram.com/zololabs",
+    },
+
+    facebook: {
+      label: "ZoloLabs",
+      href: "https://facebook.com/",
+    },
+
+    tiktok: {
+      label: "@zololabs",
+      href: "https://www.tiktok.com/@zololabs",
+    },
+
+    github: {
+      label: "ZoloLabs-dev",
+      href: "https://github.com/ZoloLabs-dev",
+    },
+  },
+};

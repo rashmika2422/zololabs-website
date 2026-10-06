@@ -84,16 +84,13 @@ export async function sendEnquiry(
   // Preserve the deployed Supabase schema and existing notification payload.
   // Reserve room within its 2,000-character message limit for project details.
   const inquiry = {
-    name: fields.name,
-    email: fields.email,
-    company: fields.company,
-    message: [
-      `Project type: ${fields.projectType}`,
-      ...(fields.phone ? [`Phone: ${fields.phone}`] : []),
-      "",
-      fields.message,
-    ].join("\n"),
-  };
+  name: fields.name,
+  email: fields.email,
+  company: fields.company,
+  phone: fields.phone,
+  projectType: fields.projectType,
+  message: fields.message,
+ };
 
   const validationError = validateInquiry(inquiry);
   if (validationError) return { status: "error", message: validationError };

@@ -1,6 +1,6 @@
 import "server-only";
 
-export type InquiryInput = { name: string; email: string; company: string; message: string };
+export type InquiryInput = { name: string; email: string; company: string; phone: string; projectType: string; message: string };
 export type InquiryRecord = InquiryInput & {
   id: string;
   created_at: string;
@@ -21,6 +21,8 @@ export function validateInquiry(input: InquiryInput): string | null {
   if (input.email.length > 120 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u.test(input.email)) return "Please enter an email address we can reply to.";
   if (input.company.length > 120) return "Please keep the company name within 120 characters.";
   if (input.message.length < 20 || input.message.length > 2000) return "Please enter a message between 20 and 2,000 characters.";
+  if (input.phone.length > 30) return "Please enter a valid phone number.";
+  if (!input.projectType || input.projectType.length > 100) return "Please select a valid project type.";
   return null;
 }
 
@@ -52,17 +54,50 @@ function notificationChannel(): InquiryRecord["notification_channel"] {
   return process.env.CONTACT_WEBHOOK_URL?.trim() ? "webhook" : "none";
 }
 
-export async function saveInquiry(input: InquiryInput): Promise<InquiryRecord> {
+export async function saveInquiry(
+  input: InquiryInput,
+): Promise<InquiryRecord> {
   const invalid = validateInquiry(input);
-  if (invalid) throw new InquiryError("inquiry_validation_failed");
+
+  if (invalid) {
+    throw new InquiryError("inquiry_validation_failed");
+  }
+
   const channel = notificationChannel();
+
   const response = await database("", {
-    method: "POST", headers: { Prefer: "return=representation" },
-    body: JSON.stringify({ ...input, company: input.company || null, source: "website/contact", notification_channel: channel, notification_status: channel === "none" ? "disabled" : "pending" }),
+    method: "POST",
+    headers: {
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({
+      name: input.name,
+      email: input.email,
+      company: input.company || null,
+      phone: input.phone || null,
+      project_type: input.projectType,
+      message: input.message,
+      source: "website/contact",
+      notification_channel: channel,
+      notification_status:
+        channel === "none" ? "disabled" : "pending",
+    }),
   });
-  const records: InquiryRecord[] = await response.json();
-  if (!records[0]?.id) throw new InquiryError("supabase_insert_response_invalid");
-  return records[0];
+
+  const records = await response.json();
+
+  const record = records[0];
+
+  if (!record?.id) {
+    throw new InquiryError("supabase_insert_response_invalid");
+  }
+
+  return {
+    ...record,
+    company: record.company ?? "",
+    phone: record.phone ?? "",
+    projectType: record.project_type,
+  };
 }
 
 export async function sendInquiryWebhook(input: InquiryInput, record?: InquiryRecord): Promise<void> {
