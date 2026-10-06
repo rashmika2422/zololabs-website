@@ -121,7 +121,7 @@ async function sendInquiryEmail(record: InquiryRecord): Promise<void> {
     body: JSON.stringify({
       from, to, reply_to: record.email,
       subject: "New ZoloLabs website inquiry",
-      text: [`Inquiry: ${record.id}`, `Received: ${record.created_at}`, `Name: ${record.name}`, `Email: ${record.email}`, `Company: ${record.company || "Not provided"}`, "", record.message, "", "Reply to this email to contact the customer."].join("\n"),
+      text: [`Inquiry: ${record.id}`, `Received: ${record.created_at}`, `Name: ${record.name}`, `Mobile: ${record.phone || "Not provided"}`, `Email: ${record.email}`, `Company: ${record.company || "Not provided"}`, "", record.message, "", "Reply to this email to contact the customer."].join("\n"),
     }),
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
